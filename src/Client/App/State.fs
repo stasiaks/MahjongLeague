@@ -28,4 +28,7 @@ let init(): State * Cmd<Msg> =
 // these commands in turn, can dispatch messages to which the update function will react.
 let update (msg: Msg) (currentModel: State): State * Cmd<Msg> =
     match currentModel, msg with
+    | _, (NavigateTo destination) ->
+        let newModel = {currentModel with CurrentPage = destination}
+        newModel, Cmd.none
     | _ -> currentModel, Cmd.none

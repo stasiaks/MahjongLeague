@@ -33,14 +33,16 @@ let safeComponents =
           str " powered by: "
           components ]
 
-let navBrand =
+let navBrand dispatch =
+    let navigateProps destination = Navbar.Item.Props [ OnClick(fun _ -> NavigateTo destination |> dispatch) ]
     Navbar.navbar [ Navbar.Color IsWhite ]
         [ Container.container []
               [ Navbar.Brand.div [] [ Navbar.Item.a [ Navbar.Item.CustomClass "brand-text" ] [ str "SAFE Admin" ] ]
                 Navbar.menu []
                     [ Navbar.Start.div []
-                          [ Navbar.Item.a [] [ str "Home" ]
-                            Navbar.Item.a [] [ str "Admin" ] ] ] ] ]
+                          [ Navbar.Item.a [ navigateProps Home ] [ str "Home" ]
+                            Navbar.Item.a [ navigateProps Admin ] [ str "Admin" ] ] ] ] ]
+
 let main (state: State) dispatch =
     match state.CurrentPage with
     | Home -> Home.View.render
@@ -48,6 +50,6 @@ let main (state: State) dispatch =
 
 let render (model: State) (dispatch: Msg -> unit) =
     div []
-        [ navBrand
+        [ navBrand dispatch
           main model dispatch
           footer [] [ safeComponents ] ]
