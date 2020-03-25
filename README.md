@@ -1,3 +1,5 @@
+![.NET Core](https://github.com/stasiaks/MahjongLeague/workflows/.NET%20Core/badge.svg)
+
 ## Install pre-requisites
 
 You'll need to install the following pre-requisites in order to build SAFE applications
