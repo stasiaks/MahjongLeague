@@ -1,11 +1,15 @@
 module App.Types
 
-open Shared
+type Page =
+    | Home
+    | Admin
 
 type Msg =
-    | Increment
-    | Decrement
-    | InitialCountLoaded of Counter
+    | AdminMsg of Admin.Types.Msg
+    | NavigateTo of Page
 
 type State =
-    { Counter: Counter option }
+    { // Children state
+      Admin: Admin.Types.State
+      // App's state
+      CurrentPage: Page }

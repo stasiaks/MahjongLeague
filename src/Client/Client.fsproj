@@ -10,6 +10,12 @@
         <None Include="style.scss" />
         <Compile Include="../Shared/Shared.fs" />
         <Compile Include="Version.fs" />
+        <!-- App/Home -->
+        <Compile Include="App/Home/View.fs" />
+        <!-- App/Admin -->
+        <Compile Include="App/Admin/Types.fs" />
+        <Compile Include="App/Admin/View.fs" />
+        <Compile Include="App/Admin/State.fs" />
         <!-- App -->
         <Compile Include="App/Types.fs" />
         <Compile Include="App/View.fs" />
