@@ -48,8 +48,8 @@ let main (state: State) dispatch =
     | Home -> Home.View.render
     | Admin -> Admin.View.render state.Admin (AdminMsg >> dispatch)
 
-let render (model: State) (dispatch: Msg -> unit) =
+let render (state: State) (dispatch: Msg -> unit) =
     div []
         [ navBrand dispatch
-          main model dispatch
+          main state dispatch
           footer [] [ safeComponents ] ]
