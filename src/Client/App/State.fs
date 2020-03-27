@@ -28,3 +28,6 @@ let update (msg: Msg) (state: State): State * Cmd<Msg> =
     | NavigateTo destination ->
         let nextState = { state with CurrentPage = destination }
         nextState, Cmd.none
+    | ChangeLocale locale ->
+        let nextState = { state with Locale = locale }
+        nextState, Cmd.none
