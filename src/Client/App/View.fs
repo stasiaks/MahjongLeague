@@ -6,6 +6,7 @@ open Fable.React.Props
 open Fulma
 
 open Shared
+open App.Localization
 open App.Types
 
 let safeComponents =
@@ -33,23 +34,23 @@ let safeComponents =
           str " powered by: "
           components ]
 
-let navBrand dispatch =
+let navBrand locale dispatch =
     let navigateProps destination = Navbar.Item.Props [ OnClick(fun _ -> NavigateTo destination |> dispatch) ]
     Navbar.navbar [ Navbar.Color IsWhite ]
         [ Container.container []
               [ Navbar.Brand.div [] [ Navbar.Item.a [ Navbar.Item.CustomClass "brand-text" ] [ str "SAFE Admin" ] ]
                 Navbar.menu []
                     [ Navbar.Start.div []
-                          [ Navbar.Item.a [ navigateProps Home ] [ str "Home" ]
-                            Navbar.Item.a [ navigateProps Admin ] [ str "Admin" ] ] ] ] ]
+                          [ Navbar.Item.a [ navigateProps Home ] [ lstr locale LocalizationToken.Home ]
+                            Navbar.Item.a [ navigateProps Admin ] [ lstr locale LocalizationToken.Admin ] ] ] ] ]
 
 let main (state: State) dispatch =
     match state.CurrentPage with
-    | Home -> Home.View.render
+    | Home -> Home.View.render state.Locale
     | Admin -> Admin.View.render state.Admin (AdminMsg >> dispatch)
 
 let render (state: State) (dispatch: Msg -> unit) =
     div []
-        [ navBrand dispatch
+        [ navBrand state.Locale dispatch
           main state dispatch
           footer [] [ safeComponents ] ]

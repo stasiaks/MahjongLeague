@@ -2,6 +2,7 @@ module App.State
 
 open Elmish
 
+open Locale
 open App.Types
 
 // defines the initial state and initial command (= side-effect) of the application
@@ -10,7 +11,8 @@ let init(): State * Cmd<Msg> =
 
     let state =
         { Admin = admin
-          CurrentPage = Admin }
+          CurrentPage = Admin
+          Locale = English }
     state, Cmd.batch [ Cmd.map AdminMsg adminCmd ]
 
 // The update function computes the next state of the application based on the current state and the incoming events/messages
