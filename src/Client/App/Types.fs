@@ -9,6 +9,7 @@ type Page =
 type Msg =
     | AdminMsg of Admin.Types.Msg
     | NavigateTo of Page
+    | ChangeLocale of Locale
 
 type State =
     { // Children state

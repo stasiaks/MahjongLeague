@@ -5,9 +5,9 @@ open Fable.React
 open Fable.React.Props
 open Fulma
 
-open Shared
-open App.Localization
+open Locale
 open App.Types
+open App.Localization
 
 let safeComponents =
     let components =
@@ -35,22 +35,28 @@ let safeComponents =
           components ]
 
 let navBrand locale dispatch =
-    let navigateProps destination = Navbar.Item.Props [ OnClick(fun _ -> NavigateTo destination |> dispatch) ]
+    let dispatchProps msg = Navbar.Item.Props [ OnClick(fun _ -> dispatch msg) ]
     Navbar.navbar [ Navbar.Color IsWhite ]
         [ Container.container []
               [ Navbar.Brand.div [] [ Navbar.Item.a [ Navbar.Item.CustomClass "brand-text" ] [ str "SAFE Admin" ] ]
                 Navbar.menu []
                     [ Navbar.Start.div []
-                          [ Navbar.Item.a [ navigateProps Home ] [ lstr locale LocalizationToken.Home ]
-                            Navbar.Item.a [ navigateProps Admin ] [ lstr locale LocalizationToken.Admin ] ] ] ] ]
+                          [ Navbar.Item.a [ dispatchProps (NavigateTo Page.Home) ] [ lstr locale Home ]
+                            Navbar.Item.a [ dispatchProps (NavigateTo Page.Admin) ] [ lstr locale Admin ] ]
+                      Navbar.End.div []
+                          [ Navbar.Item.div [ Navbar.Item.HasDropdown; Navbar.Item.IsHoverable ]
+                                [ Navbar.Link.div [] [ lstr locale Language ]
+                                  Navbar.Dropdown.div []
+                                      [ Navbar.Item.a [ dispatchProps (ChangeLocale English) ] [ str "English" ]
+                                        Navbar.Item.a [ dispatchProps (ChangeLocale Polish) ] [ str "Polski" ] ] ] ] ] ] ]
 
 let main (state: State) dispatch =
     match state.CurrentPage with
-    | Home -> Home.View.render state.Locale
-    | Admin -> Admin.View.render state.Admin (AdminMsg >> dispatch)
+    | Page.Home -> Home.View.render state.Locale
+    | Page.Admin -> Admin.View.render state.Admin (AdminMsg >> dispatch)
 
 let render (state: State) (dispatch: Msg -> unit) =
     div []
         [ navBrand state.Locale dispatch
           main state dispatch
-          footer [] [ safeComponents ] ]
+          Container.container [] [ footer [] [ safeComponents ] ] ]
