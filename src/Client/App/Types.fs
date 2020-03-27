@@ -1,5 +1,7 @@
 module App.Types
 
+open Locale
+
 type Page =
     | Home
     | Admin
@@ -12,4 +14,5 @@ type State =
     { // Children state
       Admin: Admin.Types.State
       // App's state
-      CurrentPage: Page }
+      CurrentPage: Page
+      Locale: Locale }
