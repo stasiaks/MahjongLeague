@@ -1,6 +1,5 @@
 module App.Localization
 
-open Fable.React
 open Locale
 
 type LocalizationToken =
@@ -27,6 +26,4 @@ let localize locale token =
     | Polish, Admin -> "Administracja"
     | Polish, Language -> "Język"
     | Polish, Version -> "Wersja"
-    | Polish, PoweredBy -> " przy pomocy"
-
-let localizedStr locale token = localize locale token |> str
+    | Polish, PoweredBy -> "przy pomocy"
