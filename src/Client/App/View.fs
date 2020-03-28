@@ -59,7 +59,7 @@ let main (state: State) dispatch lstr =
     | Page.Admin -> Admin.View.render state.Admin (AdminMsg >> dispatch)
 
 let render (state: State) (dispatch: Msg -> unit) =
-    let lstr = localizedStr state.Locale
+    let lstr token = localize state.Locale token |> str
     div []
         [ navBrand dispatch lstr
           main state dispatch lstr
