@@ -14,5 +14,3 @@ let localize locale token =
     | Polish ->
         match token with
         | HelloWorld -> "Witaj świecie!"
-
-let lstr locale token = localize locale token |> str

@@ -4,21 +4,29 @@ open Fable.React
 open Locale
 
 type LocalizationToken =
+    | HomeToken of Home.Localization.LocalizationToken
     | Home
     | Admin
     | Language
+    | Version
+    | PoweredBy
 
 let localize locale token =
-    match locale with
-    | English ->
-        match token with
-        | Home -> "Home"
-        | Admin -> "Admin"
-        | Language -> "Language"
-    | Polish ->
-        match token with
-        | Home -> "Strona główna"
-        | Admin -> "Administracja"
-        | Language -> "Język"
+    match locale, token with
+    | _, HomeToken t -> Home.Localization.localize locale t
 
-let lstr locale token = localize locale token |> str
+    // English
+    | English, Home -> "Home"
+    | English, Admin -> "Admin"
+    | English, Language -> "Language"
+    | English, Version -> "Version"
+    | English, PoweredBy -> "powered by"
+
+    // Polish (Polski)
+    | Polish, Home -> "Strona główna"
+    | Polish, Admin -> "Administracja"
+    | Polish, Language -> "Język"
+    | Polish, Version -> "Wersja"
+    | Polish, PoweredBy -> " przy pomocy"
+
+let localizedStr locale token = localize locale token |> str

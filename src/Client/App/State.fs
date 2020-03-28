@@ -11,6 +11,7 @@ let init(): State * Cmd<Msg> =
 
     let state =
         { Admin = admin
+          // Application state
           CurrentPage = Admin
           Locale = English }
     state, Cmd.batch [ Cmd.map AdminMsg adminCmd ]
