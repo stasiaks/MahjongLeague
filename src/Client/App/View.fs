@@ -9,7 +9,7 @@ open Locale
 open App.Types
 open App.Localization
 
-let safeComponents =
+let safeComponents lstr =
     let components =
         span []
             [ a [ Href "https://github.com/SAFE-Stack/SAFE-template" ]
@@ -29,34 +29,38 @@ let safeComponents =
               a [ Href "https://zaid-ajaj.github.io/Fable.Remoting/" ] [ str "Fable.Remoting" ] ]
 
     span []
-        [ str "Version "
+        [ lstr Version
+          str " "
           strong [] [ str Version.app ]
-          str " powered by: "
+          str " "
+          lstr PoweredBy
+          str ": "
           components ]
 
-let navBrand locale dispatch =
+let navBrand dispatch lstr =
     let dispatchProps msg = Navbar.Item.Props [ OnClick(fun _ -> dispatch msg) ]
     Navbar.navbar [ Navbar.Color IsWhite ]
         [ Container.container []
               [ Navbar.Brand.div [] [ Navbar.Item.a [ Navbar.Item.CustomClass "brand-text" ] [ str "SAFE Admin" ] ]
                 Navbar.menu []
                     [ Navbar.Start.div []
-                          [ Navbar.Item.a [ dispatchProps (NavigateTo Page.Home) ] [ lstr locale Home ]
-                            Navbar.Item.a [ dispatchProps (NavigateTo Page.Admin) ] [ lstr locale Admin ] ]
+                          [ Navbar.Item.a [ dispatchProps (NavigateTo Page.Home) ] [ lstr Home ]
+                            Navbar.Item.a [ dispatchProps (NavigateTo Page.Admin) ] [ lstr Admin ] ]
                       Navbar.End.div []
                           [ Navbar.Item.div [ Navbar.Item.HasDropdown; Navbar.Item.IsHoverable ]
-                                [ Navbar.Link.div [] [ lstr locale Language ]
+                                [ Navbar.Link.div [] [ lstr Language ]
                                   Navbar.Dropdown.div []
                                       [ Navbar.Item.a [ dispatchProps (ChangeLocale English) ] [ str "English" ]
                                         Navbar.Item.a [ dispatchProps (ChangeLocale Polish) ] [ str "Polski" ] ] ] ] ] ] ]
 
-let main (state: State) dispatch =
+let main (state: State) dispatch lstr =
     match state.CurrentPage with
-    | Page.Home -> Home.View.render state.Locale
+    | Page.Home -> Home.View.render (HomeToken >> lstr)
     | Page.Admin -> Admin.View.render state.Admin (AdminMsg >> dispatch)
 
 let render (state: State) (dispatch: Msg -> unit) =
+    let lstr = localizedStr state.Locale
     div []
-        [ navBrand state.Locale dispatch
-          main state dispatch
-          Container.container [] [ footer [] [ safeComponents ] ] ]
+        [ navBrand dispatch lstr
+          main state dispatch lstr
+          Container.container [] [ footer [] [ safeComponents lstr ] ] ]
