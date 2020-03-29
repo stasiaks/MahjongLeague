@@ -6,7 +6,6 @@ open Elmish.Navigation
 
 open App.View
 open App.State
-open App.Types
 open App.Urls
 
 #if DEBUG
