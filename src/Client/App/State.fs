@@ -7,14 +7,25 @@ open Locale
 open App.Types
 open App.Urls
 
+[<Literal>]
+let LocaleStorageKey = "app.locale"
+
+let localeFromStorage =
+    localStorage.getItem LocaleStorageKey
+    |> function
+    | a when a = (string English) -> Some English
+    | a when a = (string Polish) -> Some Polish
+    | _ -> None
+
 // defines the initial state and initial command (= side-effect) of the application
 let init (page: Page option): State * Cmd<Msg> =
     let admin, adminCmd = Admin.State.init()
+
     let state =
         { Admin = admin
           // Application state
           CurrentPage = Option.defaultValue Admin page
-          Locale = English }
+          Locale = Option.defaultValue English localeFromStorage }
     state, Cmd.batch [ Cmd.map AdminMsg adminCmd ]
 
 // The update function computes the next state of the application based on the current state and the incoming events/messages
@@ -29,8 +40,9 @@ let update (msg: Msg) (state: State): State * Cmd<Msg> =
         nextState, nextCmd
     | NavigateTo destination ->
         let nextState = { state with CurrentPage = destination }
-        history.pushState((), "", (toUrl destination))
+        history.pushState ((), "", (toUrl destination))
         nextState, Cmd.none
     | ChangeLocale locale ->
         let nextState = { state with Locale = locale }
+        localStorage.setItem (LocaleStorageKey, (string locale))
         nextState, Cmd.none
