@@ -6,7 +6,8 @@
     </PropertyGroup>
     <ItemGroup>
         <None Include="paket.references" />
-        <Compile Include="../Shared/Shared.fs" />
+        <Compile Include="../Shared/Types.fs" />
+        <Compile Include="../Shared/Api.fs" />
         <Compile Include="Server.fs" />
     </ItemGroup>
     <Import Project="../../.paket/Paket.Restore.targets" />
