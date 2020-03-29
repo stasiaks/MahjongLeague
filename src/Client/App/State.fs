@@ -1,9 +1,11 @@
 module App.State
 
+open Browser
 open Elmish
 
 open Locale
 open App.Types
+open App.Urls
 
 // defines the initial state and initial command (= side-effect) of the application
 let init(): State * Cmd<Msg> =
@@ -28,6 +30,7 @@ let update (msg: Msg) (state: State): State * Cmd<Msg> =
         nextState, nextCmd
     | NavigateTo destination ->
         let nextState = { state with CurrentPage = destination }
+        history.pushState((), "", (toUrl destination))
         nextState, Cmd.none
     | ChangeLocale locale ->
         let nextState = { state with Locale = locale }

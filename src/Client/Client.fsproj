@@ -21,6 +21,7 @@
         <!-- App -->
         <Compile Include="App/Localization.fs" />
         <Compile Include="App/Types.fs" />
+        <Compile Include="App/Urls.fs" />
         <Compile Include="App/View.fs" />
         <Compile Include="App/State.fs" />
         <Compile Include="Client.fs" />
