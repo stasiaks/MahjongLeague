@@ -8,13 +8,12 @@ open App.Types
 open App.Urls
 
 // defines the initial state and initial command (= side-effect) of the application
-let init(): State * Cmd<Msg> =
+let init (page: Page option): State * Cmd<Msg> =
     let admin, adminCmd = Admin.State.init()
-
     let state =
         { Admin = admin
           // Application state
-          CurrentPage = Admin
+          CurrentPage = Option.defaultValue Admin page
           Locale = English }
     state, Cmd.batch [ Cmd.map AdminMsg adminCmd ]
 
