@@ -1,7 +1,5 @@
 namespace Shared
 
-type Counter = { Value : int }
-
 module Route =
     /// Defines how routes are generated on server and mapped from client
     let builder typeName methodName =
@@ -11,4 +9,3 @@ module Route =
 /// to learn more, read the docs at https://zaid-ajaj.github.io/Fable.Remoting/src/basics.html
 type ICounterApi =
     { initialCounter : unit -> Async<Counter> }
-
