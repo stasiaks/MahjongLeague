@@ -2,9 +2,12 @@ module Client
 
 open Elmish
 open Elmish.React
+open Elmish.Navigation
 
 open App.View
 open App.State
+open App.Types
+open App.Urls
 
 #if DEBUG
 open Elmish.Debug
@@ -16,5 +19,6 @@ Program.mkProgram init update render
 |> Program.withConsoleTrace
 |> Program.withDebugger
 #endif
+|> Program.toNavigable parser urlUpdate
 |> Program.withReactBatched "elmish-app"
 |> Program.run
