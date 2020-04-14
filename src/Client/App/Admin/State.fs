@@ -34,6 +34,6 @@ let update (msg: Msg) (state: State): State * Cmd<Msg> =
         let nextState = { state with Counter = Some { Value = counter.Value - 1 } }
         nextState, Cmd.none
     | _, InitialCountLoaded initialCount ->
-        let nextState = { Counter = Some initialCount }
+        let nextState = { state with Counter = Some initialCount }
         nextState, Cmd.none
     | _ -> state, Cmd.none

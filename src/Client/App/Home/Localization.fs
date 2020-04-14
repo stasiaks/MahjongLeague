@@ -1,6 +1,5 @@
 module App.Home.Localization
 
-open Fable.React
 open Locale
 
 type LocalizationToken =

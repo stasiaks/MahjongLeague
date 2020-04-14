@@ -15,7 +15,14 @@
         <!-- App/Home -->
         <Compile Include="App/Home/Localization.fs" />
         <Compile Include="App/Home/View.fs" />
+        <!-- App/Admin/Dashboard -->
+        <Compile Include="App/Admin/Dashboard/Localization.fs" />
+        <Compile Include="App/Admin/Dashboard/View.fs" />
+        <!-- App/Admin/Users -->
+        <Compile Include="App/Admin/Users/Localization.fs" />
+        <Compile Include="App/Admin/Users/View.fs" />
         <!-- App/Admin -->
+        <Compile Include="App/Admin/Localization.fs" />
         <Compile Include="App/Admin/Types.fs" />
         <Compile Include="App/Admin/View.fs" />
         <Compile Include="App/Admin/State.fs" />

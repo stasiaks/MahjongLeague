@@ -4,7 +4,7 @@ open Locale
 
 type Page =
     | Home
-    | Admin
+    | Admin of Admin.Types.Page
 
 type Msg =
     | AdminMsg of Admin.Types.Msg

@@ -9,12 +9,12 @@ open App.Types
 let toUrl page =
     match page with
     | Home -> "home"
-    | Admin -> "admin"
+    | Admin _ -> "admin"
 
 let parser: Parser<Page option> =
     oneOf [
         map Home (s <| toUrl Home)
-        map Admin (s <| toUrl Admin)
+        map (Admin Admin.Types.Page.Dashboard) (s <| toUrl (Admin <| Admin.Types.Page.Dashboard) )
     ] |> parsePath
 
 let urlUpdate route state =
