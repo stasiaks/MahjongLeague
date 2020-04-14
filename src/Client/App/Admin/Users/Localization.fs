@@ -1,15 +1,15 @@
-module App.Home.Localization
+module App.Admin.Users.Localization
 
 open Locale
 
 type LocalizationToken =
-    | HelloWorld
+    | Users
 
 let localize locale token =
     match locale with
     | English ->
         match token with
-        | HelloWorld -> "Hello world!"
+        | Users -> "Users"
     | Polish ->
         match token with
-        | HelloWorld -> "Witaj świecie!"
+        | Users -> "Użytkownicy"

@@ -46,7 +46,7 @@ let navBrand dispatch lstr =
                 Navbar.menu []
                     [ Navbar.Start.div []
                           [ Navbar.Item.a [ dispatchProps (NavigateTo Page.Home) ] [ lstr Home ]
-                            Navbar.Item.a [ dispatchProps (NavigateTo Page.Admin) ] [ lstr Admin ] ]
+                            Navbar.Item.a [ dispatchProps (NavigateTo (Page.Admin Admin.Types.Page.Dashboard)) ] [ lstr Admin ] ]
                       Navbar.End.div []
                           [ Navbar.Item.div [ Navbar.Item.HasDropdown; Navbar.Item.IsHoverable ]
                                 [ Navbar.Link.div []
@@ -59,7 +59,7 @@ let navBrand dispatch lstr =
 let main (state: State) dispatch lstr =
     match state.CurrentPage with
     | Page.Home -> Home.View.render (HomeToken >> lstr)
-    | Page.Admin -> Admin.View.render state.Admin (AdminMsg >> dispatch)
+    | Page.Admin page -> Admin.View.render state.Admin (AdminMsg >> dispatch) (AdminToken >> lstr) page
 
 let render (state: State) (dispatch: Msg -> unit) =
     let lstr token = localize state.Locale token |> str
