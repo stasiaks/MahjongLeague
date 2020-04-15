@@ -6,16 +6,20 @@ open Elmish.Navigation
 
 open App.Types
 
+let homeSegment = "home"
+let adminSegment = "admin"
+
 let toUrl page =
     match page with
-    | Home -> "home"
-    | Admin _ -> "admin"
+    | Home -> homeSegment
+    | Admin t -> sprintf "%s/%s" <| adminSegment <| Admin.Urls.toUrl t
+    |> (+) "/"
 
 let parser: Parser<Page option> =
-    oneOf [
-        map Home (s <| toUrl Home)
-        map (Admin Admin.Types.Page.Dashboard) (s <| toUrl (Admin <| Admin.Types.Page.Dashboard) )
-    ] |> parsePath
+    oneOf
+        [ map Home (s homeSegment)
+          map Admin (s adminSegment </> Admin.Urls.parseSegment) ]
+    |> parsePath
 
 let urlUpdate route state =
     match route with
