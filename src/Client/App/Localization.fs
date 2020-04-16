@@ -5,6 +5,7 @@ open Locale
 type LocalizationToken =
     | HomeToken of Home.Localization.LocalizationToken
     | AdminToken of Admin.Localization.LocalizationToken
+    | NotFoundToken of NotFound.Localization.LocalizationToken
     | Home
     | Admin
     | Language
@@ -15,6 +16,7 @@ let localize locale token =
     match locale, token with
     | _, HomeToken t -> Home.Localization.localize locale t
     | _, AdminToken t -> Admin.Localization.localize locale t
+    | _, NotFoundToken t -> NotFound.Localization.localize locale t
 
     // English
     | English, Home -> "Home"

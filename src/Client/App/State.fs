@@ -24,7 +24,7 @@ let init (page: Page option): State * Cmd<Msg> =
     let state =
         { Admin = admin
           // Application state
-          CurrentPage = Option.defaultValue (Admin Admin.Types.Page.Dashboard) page
+          CurrentPage = Option.defaultValue Page.NotFound page
           Locale = Option.defaultValue English localeFromStorage }
     state, Cmd.batch [ Cmd.map AdminMsg adminCmd ]
 

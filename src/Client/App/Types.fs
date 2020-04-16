@@ -2,9 +2,11 @@ module App.Types
 
 open Locale
 
+[<RequireQualifiedAccess>]
 type Page =
     | Home
     | Admin of Admin.Types.Page
+    | NotFound
 
 type Msg =
     | AdminMsg of Admin.Types.Msg
