@@ -60,6 +60,7 @@ let main (state: State) dispatch lstr =
     match state.CurrentPage with
     | Page.Home -> Home.View.render (HomeToken >> lstr)
     | Page.Admin page -> Admin.View.render state.Admin (AdminMsg >> dispatch) (AdminToken >> lstr) page
+    | Page.NotFound -> NotFound.View.render (NotFoundToken >> lstr)
 
 let render (state: State) (dispatch: Msg -> unit) =
     let lstr token = localize state.Locale token |> str
