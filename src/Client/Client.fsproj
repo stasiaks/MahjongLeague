@@ -27,6 +27,9 @@
         <Compile Include="App/Admin/Urls.fs" />
         <Compile Include="App/Admin/View.fs" />
         <Compile Include="App/Admin/State.fs" />
+        <!-- App/NotFound -->
+        <Compile Include="App/NotFound/Localization.fs" />
+        <Compile Include="App/NotFound/View.fs" />
         <!-- App -->
         <Compile Include="App/Localization.fs" />
         <Compile Include="App/Types.fs" />
