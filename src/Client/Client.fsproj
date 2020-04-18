@@ -8,6 +8,7 @@
         <None Include="index.html" />
         <None Include="paket.references" />
         <None Include="style.scss" />
+        <Compile Include="../Shared/Authentication.fs" />
         <Compile Include="../Shared/Types.fs" />
         <Compile Include="../Shared/Api.fs" />
         <Compile Include="Version.fs" />
