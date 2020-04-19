@@ -6,6 +6,7 @@ open Elmish
 open Locale
 open App.Types
 open App.Urls
+open App.Auth0
 
 [<Literal>]
 let LocaleStorageKey = "app.locale"
@@ -28,6 +29,8 @@ let init (page: Page option): State * Cmd<Msg> =
           Locale = Option.defaultValue English localeFromStorage }
     state, Cmd.batch [ Cmd.map AdminMsg adminCmd ]
 
+let auth0Lock = Auth0Lock.Create ("CLIENTID", "DOMAIN")
+
 // The update function computes the next state of the application based on the current state and the incoming events/messages
 // It can also run side-effects (encoded as commands) like calling the server via Http.
 // these commands in turn, can dispatch messages to which the update function will react.
@@ -46,3 +49,6 @@ let update (msg: Msg) (state: State): State * Cmd<Msg> =
         let nextState = { state with Locale = locale }
         localStorage.setItem (LocaleStorageKey, (string locale))
         nextState, Cmd.none
+    | Login ->
+        auth0Lock.show()
+        state, Cmd.none

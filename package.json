@@ -29,6 +29,7 @@
         "webpack": "^4.41.2",
         "webpack-cli": "^3.3.11",
         "webpack-dev-server": "^3.8.2",
-        "whatwg-fetch": "^3.0.0"
+        "whatwg-fetch": "^3.0.0",
+        "auth0-lock": "^11.23.0"
     }
 }
