@@ -8,6 +8,7 @@ type LocalizationToken =
     | NotFoundToken of NotFound.Localization.LocalizationToken
     | Home
     | Admin
+    | SignIn
     | Language
     | Version
     | PoweredBy
@@ -21,6 +22,7 @@ let localize locale token =
     // English
     | English, Home -> "Home"
     | English, Admin -> "Admin"
+    | English, SignIn -> "Sign in"
     | English, Language -> "Language"
     | English, Version -> "Version"
     | English, PoweredBy -> "powered by"
@@ -28,6 +30,7 @@ let localize locale token =
     // Polish (Polski)
     | Polish, Home -> "Strona główna"
     | Polish, Admin -> "Administracja"
+    | Polish, SignIn -> "Zaloguj się"
     | Polish, Language -> "Język"
     | Polish, Version -> "Wersja"
     | Polish, PoweredBy -> "przy pomocy"

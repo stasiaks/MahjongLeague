@@ -54,7 +54,8 @@ let navBrand dispatch lstr =
                                         lstr Language ]
                                   Navbar.Dropdown.div []
                                       [ Navbar.Item.a [ dispatchProps (ChangeLocale English) ] [ str "English" ]
-                                        Navbar.Item.a [ dispatchProps (ChangeLocale Polish) ] [ str "Polski" ] ] ] ] ] ] ]
+                                        Navbar.Item.a [ dispatchProps (ChangeLocale Polish) ] [ str "Polski" ] ] ]
+                            Navbar.Item.a [ dispatchProps Login ] [ lstr SignIn ] ] ] ] ]
 
 let main (state: State) dispatch lstr =
     match state.CurrentPage with
