@@ -12,6 +12,7 @@ type Msg =
     | AdminMsg of Admin.Types.Msg
     | NavigateTo of Page
     | ChangeLocale of Locale
+    | Login
 
 type State =
     { // Children state
