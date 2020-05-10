@@ -11,11 +11,16 @@ type Page =
     | NotFound
 
 type Msg =
-    | AdminMsg of Admin.Types.Msg
+    | AdminMsg of Admin.Types.InternalMsg
     | NavigateTo of Page
     | ChangeLocale of Locale
     | Login
     | Authenticated of IAuthResult
+
+let adminTranslator =
+    Admin.Types.translator
+        { OnInternalMsg = AdminMsg
+          OnNavigateTo = Page.Admin >> NavigateTo }
 
 type State =
     { // Children state

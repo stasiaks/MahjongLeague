@@ -1,8 +1,6 @@
 module App.Admin.View
 
-open Fable.FontAwesome
 open Fable.React
-open Fable.React.Props
 open Fulma
 
 open Shared
@@ -14,12 +12,13 @@ let show =
     | { Counter = Some counter } -> string counter.Value
     | { Counter = None } -> "Loading..."
 
-let menu =
+let menu dispatch =
+    let menuDispatchProp msg = Menu.Item.OnClick(fun _ -> dispatch msg)
     Menu.menu []
         [ Menu.label [] [ str "General" ]
           Menu.list []
-              [ Menu.Item.a [] [ str "Dashboard" ]
-                Menu.Item.a [] [ str "Users" ] ] ]
+              [ Menu.Item.a [ menuDispatchProp (NavigateTo Dashboard |> ForParent) ] [ str "Dashboard" ]
+                Menu.Item.a [ menuDispatchProp (NavigateTo Users |> ForParent) ] [ str "Users" ] ] ]
 
 let counter (model: State) (dispatch: Msg -> unit) =
     Field.div [ Field.IsGrouped ]
@@ -30,21 +29,21 @@ let counter (model: State) (dispatch: Msg -> unit) =
           Control.p []
               [ Button.a
                   [ Button.Color IsInfo
-                    Button.OnClick(fun _ -> dispatch Increment) ] [ str "+" ] ]
+                    Button.OnClick(fun _ -> Increment |> ForSelf |> dispatch) ] [ str "+" ] ]
           Control.p []
               [ Button.a
                   [ Button.Color IsInfo
-                    Button.OnClick(fun _ -> dispatch Decrement) ] [ str "-" ] ] ]
+                    Button.OnClick(fun _ -> Decrement |> ForSelf |> dispatch) ] [ str "-" ] ] ]
 
 let main page lstr =
     match page with
-    | Dashboard -> App.Admin.Dashboard.View.render (DashboardToken >> lstr)
+    | Dashboard -> Dashboard.View.render (DashboardToken >> lstr)
     | Users -> Users.View.render (UsersToken >> lstr)
 
 let render (state: State) (dispatch: Msg -> unit) lstr page =
     Container.container []
         [ Columns.columns []
-              [ Column.column [ Column.Width(Screen.All, Column.Is3) ] [ menu ]
+              [ Column.column [ Column.Width(Screen.All, Column.Is3) ] [ menu dispatch ]
                 Column.column [ Column.Width(Screen.All, Column.Is9) ]
                     [ main page lstr
                       counter state dispatch ] ] ]

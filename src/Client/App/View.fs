@@ -12,9 +12,7 @@ open App.Localization
 let safeComponents lstr =
     let components =
         span []
-            [ a [ Href "https://github.com/SAFE-Stack/SAFE-template" ]
-                  [ str "SAFE  "
-                    str Version.template ]
+            [ a [ Href "https://github.com/SAFE-Stack/SAFE-template" ] [ str "SAFE  "; str Version.template ]
               str ", "
               a [ Href "https://saturnframework.github.io" ] [ str "Saturn" ]
               str ", "
@@ -38,25 +36,33 @@ let safeComponents lstr =
           components ]
 
 let signIn state dispatch lstr =
-    let dispatchProps msg = Navbar.Item.Props [ OnClick(fun _ -> dispatch msg) ]
+    let dispatchProps msg =
+        Navbar.Item.Props [ OnClick(fun _ -> dispatch msg) ]
+
     match state.AccessToken with
-        | None -> Navbar.Item.a [ dispatchProps Login ] [ lstr SignIn ]
-        | Some _ -> Navbar.Item.div [] [ str "Yo" ]
+    | None -> Navbar.Item.a [ dispatchProps Login ] [ lstr SignIn ]
+    | Some _ -> Navbar.Item.div [] [ str "Yo" ]
 
 let navBrand state dispatch lstr =
-    let dispatchProps msg = Navbar.Item.Props [ OnClick(fun _ -> dispatch msg) ]
+    let dispatchProps msg =
+        Navbar.Item.Props [ OnClick(fun _ -> dispatch msg) ]
+
     Navbar.navbar [ Navbar.Color IsWhite ]
         [ Container.container []
-              [ Navbar.Brand.div []
-                    [ Navbar.Item.a [ Navbar.Item.CustomClass "brand-text" ] [ str "Mahjong League" ] ]
+              [ Navbar.Brand.div [] [ Navbar.Item.a [ Navbar.Item.CustomClass "brand-text" ] [ str "Mahjong League" ] ]
                 Navbar.menu []
                     [ Navbar.Start.div []
                           [ Navbar.Item.a [ dispatchProps (NavigateTo Page.Home) ] [ lstr Home ]
-                            Navbar.Item.a [ dispatchProps (NavigateTo (Page.Admin Admin.Types.Page.Dashboard)) ] [ lstr Admin ] ]
+                            Navbar.Item.a [ dispatchProps (NavigateTo(Page.Admin Admin.Types.Page.Dashboard)) ]
+                                [ lstr Admin ] ]
                       Navbar.End.div []
-                          [ Navbar.Item.div [ Navbar.Item.HasDropdown; Navbar.Item.IsHoverable ]
+                          [ Navbar.Item.div
+                              [ Navbar.Item.HasDropdown
+                                Navbar.Item.IsHoverable ]
                                 [ Navbar.Link.div []
-                                      [ Fa.i [ Fa.Solid.Globe; Fa.IconOption.PullLeft ] []
+                                      [ Fa.i
+                                          [ Fa.Solid.Globe
+                                            Fa.IconOption.PullLeft ] []
                                         lstr Language ]
                                   Navbar.Dropdown.div []
                                       [ Navbar.Item.a [ dispatchProps (ChangeLocale English) ] [ str "English" ]
@@ -66,7 +72,7 @@ let navBrand state dispatch lstr =
 let main (state: State) dispatch lstr =
     match state.CurrentPage with
     | Page.Home -> Home.View.render (HomeToken >> lstr)
-    | Page.Admin page -> Admin.View.render state.Admin (AdminMsg >> dispatch) (AdminToken >> lstr) page
+    | Page.Admin page -> Admin.View.render state.Admin (adminTranslator >> dispatch) (AdminToken >> lstr) page
     | Page.NotFound -> NotFound.View.render (NotFoundToken >> lstr)
 
 let render (state: State) (dispatch: Msg -> unit) =
