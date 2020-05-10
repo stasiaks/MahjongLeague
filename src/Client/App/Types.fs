@@ -23,4 +23,4 @@ type State =
       // App's state
       CurrentPage: Page
       Locale: Locale
-      IdToken: SecurityToken option }
+      AccessToken: SecurityToken option }
