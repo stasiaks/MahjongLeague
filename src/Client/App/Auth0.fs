@@ -15,7 +15,7 @@ type IAuth0UserProfile =
   abstract member picture: string with get, set
 
 type IAuthResult =
-    abstract idToken: string with get, set
+    abstract accessToken: string with get, set
 
 type IAuth0Lock =
     [<Emit "new $0($1...)">]
