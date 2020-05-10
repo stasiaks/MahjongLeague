@@ -1,6 +1,8 @@
 module App.Types
 
 open Locale
+open Auth0
+open Shared.Authentication
 
 [<RequireQualifiedAccess>]
 type Page =
@@ -13,10 +15,12 @@ type Msg =
     | NavigateTo of Page
     | ChangeLocale of Locale
     | Login
+    | Authenticated of IAuthResult
 
 type State =
     { // Children state
       Admin: Admin.Types.State
       // App's state
       CurrentPage: Page
-      Locale: Locale }
+      Locale: Locale
+      IdToken: SecurityToken option }

@@ -7,6 +7,8 @@ open Locale
 open App.Types
 open App.Urls
 open App.Auth0
+open Shared.Authentication
+open Elmish.Navigation
 
 [<Literal>]
 let LocaleStorageKey = "app.locale"
@@ -18,6 +20,8 @@ let localeFromStorage =
     | a when a = (string Polish) -> Some Polish
     | _ -> None
 
+let auth0Lock = Auth0Lock.Create (clientId, domain)
+
 // defines the initial state and initial command (= side-effect) of the application
 let init (page: Page option): State * Cmd<Msg> =
     let admin, adminCmd = Admin.State.init()
@@ -26,10 +30,13 @@ let init (page: Page option): State * Cmd<Msg> =
         { Admin = admin
           // Application state
           CurrentPage = Option.defaultValue Page.NotFound page
-          Locale = Option.defaultValue English localeFromStorage }
+          Locale = Option.defaultValue English localeFromStorage
+          IdToken = None }
     state, Cmd.batch [ Cmd.map AdminMsg adminCmd ]
 
-let auth0Lock = Auth0Lock.Create ("CLIENTID", "DOMAIN")
+let onAuthenticated state =
+  let sub dispatch = auth0Lock.on_authenticated (fun result -> result |> Authenticated |> UserMsg |> dispatch)
+  Cmd.ofSub sub
 
 // The update function computes the next state of the application based on the current state and the incoming events/messages
 // It can also run side-effects (encoded as commands) like calling the server via Http.
@@ -52,3 +59,6 @@ let update (msg: Msg) (state: State): State * Cmd<Msg> =
     | Login ->
         auth0Lock.show()
         state, Cmd.none
+    | Authenticated result ->
+        let nextState = { state with IdToken = result.accessToken |> SecurityToken |> Some }
+        nextState, Cmd.none

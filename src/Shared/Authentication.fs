@@ -10,3 +10,7 @@ type AuthenticationError =
     | TokenExpired
     | TokenInvalid
     | NoAccess
+
+let clientId = ""
+
+let domain = ""
