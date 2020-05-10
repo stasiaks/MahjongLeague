@@ -20,5 +20,5 @@ Program.mkProgram init update render
 #endif
 |> Program.toNavigable parser urlUpdate
 |> Program.withReactBatched "elmish-app"
-|> Program.withSubscription App.State.onAuthenticated
+|> Program.withSubscription onAuthenticated
 |> Program.run
