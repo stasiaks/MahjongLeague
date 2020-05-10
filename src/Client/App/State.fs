@@ -31,7 +31,7 @@ let init (page: Page option): State * Cmd<Msg> =
           // Application state
           CurrentPage = Option.defaultValue Page.NotFound page
           Locale = Option.defaultValue English localeFromStorage
-          IdToken = None }
+          AccessToken = None }
     state, Cmd.batch [ Cmd.map AdminMsg adminCmd ]
 
 let onAuthenticated state =
@@ -60,5 +60,5 @@ let update (msg: Msg) (state: State): State * Cmd<Msg> =
         auth0Lock.show()
         state, Cmd.none
     | Authenticated result ->
-        let nextState = { state with IdToken = result.accessToken |> SecurityToken |> Some }
+        let nextState = { state with AccessToken = result.accessToken |> SecurityToken |> Some }
         nextState, Cmd.none

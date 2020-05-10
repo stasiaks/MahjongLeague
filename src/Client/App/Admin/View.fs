@@ -41,10 +41,10 @@ let main page lstr =
     | Dashboard -> App.Admin.Dashboard.View.render (DashboardToken >> lstr)
     | Users -> Users.View.render (UsersToken >> lstr)
 
-let render (model: State) (dispatch: Msg -> unit) lstr page =
+let render (state: State) (dispatch: Msg -> unit) lstr page =
     Container.container []
         [ Columns.columns []
               [ Column.column [ Column.Width(Screen.All, Column.Is3) ] [ menu ]
                 Column.column [ Column.Width(Screen.All, Column.Is9) ]
                     [ main page lstr
-                      counter model dispatch ] ] ]
+                      counter state dispatch ] ] ]

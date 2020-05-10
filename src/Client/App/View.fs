@@ -37,7 +37,13 @@ let safeComponents lstr =
           str ": "
           components ]
 
-let navBrand dispatch lstr =
+let signIn state dispatch lstr =
+    let dispatchProps msg = Navbar.Item.Props [ OnClick(fun _ -> dispatch msg) ]
+    match state.AccessToken with
+        | None -> Navbar.Item.a [ dispatchProps Login ] [ lstr SignIn ]
+        | Some _ -> Navbar.Item.div [] [ str "Yo" ]
+
+let navBrand state dispatch lstr =
     let dispatchProps msg = Navbar.Item.Props [ OnClick(fun _ -> dispatch msg) ]
     Navbar.navbar [ Navbar.Color IsWhite ]
         [ Container.container []
@@ -55,7 +61,7 @@ let navBrand dispatch lstr =
                                   Navbar.Dropdown.div []
                                       [ Navbar.Item.a [ dispatchProps (ChangeLocale English) ] [ str "English" ]
                                         Navbar.Item.a [ dispatchProps (ChangeLocale Polish) ] [ str "Polski" ] ] ]
-                            Navbar.Item.a [ dispatchProps Login ] [ lstr SignIn ] ] ] ] ]
+                            signIn state dispatch lstr ] ] ] ]
 
 let main (state: State) dispatch lstr =
     match state.CurrentPage with
@@ -66,6 +72,6 @@ let main (state: State) dispatch lstr =
 let render (state: State) (dispatch: Msg -> unit) =
     let lstr token = localize state.Locale token |> str
     div []
-        [ navBrand dispatch lstr
+        [ navBrand state dispatch lstr
           main state dispatch lstr
           Container.container [] [ footer [] [ safeComponents lstr ] ] ]
