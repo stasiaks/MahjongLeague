@@ -1,44 +1,44 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
-        <DefineConstants>FABLE_COMPILER</DefineConstants>
-    </PropertyGroup>
-    <ItemGroup>
-        <None Include="index.html" />
-        <None Include="paket.references" />
-        <None Include="style.scss" />
-        <Compile Include="../Shared/Authentication.fs" />
-        <Compile Include="../Shared/Types.fs" />
-        <Compile Include="../Shared/Api.fs" />
-        <Compile Include="Version.fs" />
-        <Compile Include="Locale.fs" />
-        <!-- App/Home -->
-        <Compile Include="App/Home/Localization.fs" />
-        <Compile Include="App/Home/View.fs" />
-        <!-- App/Admin/Dashboard -->
-        <Compile Include="App/Admin/Dashboard/Localization.fs" />
-        <Compile Include="App/Admin/Dashboard/View.fs" />
-        <!-- App/Admin/Users -->
-        <Compile Include="App/Admin/Users/Localization.fs" />
-        <Compile Include="App/Admin/Users/View.fs" />
-        <!-- App/Admin -->
-        <Compile Include="App/Admin/Localization.fs" />
-        <Compile Include="App/Admin/Types.fs" />
-        <Compile Include="App/Admin/Urls.fs" />
-        <Compile Include="App/Admin/View.fs" />
-        <Compile Include="App/Admin/State.fs" />
-        <!-- App/NotFound -->
-        <Compile Include="App/NotFound/Localization.fs" />
-        <Compile Include="App/NotFound/View.fs" />
-        <!-- App -->
-        <Compile Include="App/Localization.fs" />
-        <Compile Include="App/Auth0.fs" />
-        <Compile Include="App/Types.fs" />
-        <Compile Include="App/Urls.fs" />
-        <Compile Include="App/View.fs" />
-        <Compile Include="App/State.fs" />
-        <Compile Include="Client.fs" />
-    </ItemGroup>
-    <Import Project="../../.paket/Paket.Restore.targets" />
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <DefineConstants>FABLE_COMPILER</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="index.html" />
+    <None Include="paket.references" />
+    <None Include="style.scss" />
+    <Compile Include="../Shared/Authentication.fs" />
+    <Compile Include="../Shared/Types.fs" />
+    <Compile Include="../Shared/Api.fs" />
+    <Compile Include="Version.fs" />
+    <Compile Include="Locale.fs" />
+    <!-- App/Home -->
+    <Compile Include="App/Home/Localization.fs" />
+    <Compile Include="App/Home/View.fs" />
+    <!-- App/Admin/Dashboard -->
+    <Compile Include="App/Admin/Dashboard/Localization.fs" />
+    <Compile Include="App/Admin/Dashboard/View.fs" />
+    <!-- App/Admin/Users -->
+    <Compile Include="App/Admin/Users/Localization.fs" />
+    <Compile Include="App/Admin/Users/View.fs" />
+    <!-- App/Admin -->
+    <Compile Include="App/Admin/Localization.fs" />
+    <Compile Include="App/Admin/Types.fs" />
+    <Compile Include="App/Admin/Urls.fs" />
+    <Compile Include="App/Admin/View.fs" />
+    <Compile Include="App/Admin/State.fs" />
+    <!-- App/NotFound -->
+    <Compile Include="App/NotFound/Localization.fs" />
+    <Compile Include="App/NotFound/View.fs" />
+    <!-- App -->
+    <Compile Include="App/Localization.fs" />
+    <Compile Include="App/Auth0.fs" />
+    <Compile Include="App/Types.fs" />
+    <Compile Include="App/Urls.fs" />
+    <Compile Include="App/View.fs" />
+    <Compile Include="App/State.fs" />
+    <Compile Include="Client.fs" />
+  </ItemGroup>
+  <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>
