@@ -13,12 +13,22 @@ open Elmish.Navigation
 [<Literal>]
 let LocaleStorageKey = "app.locale"
 
+[<Literal>]
+let AccessTokenStorageKey = "app.accessToken"
+
 let localeFromStorage =
     localStorage.getItem LocaleStorageKey
     |> function
     | a when a = (string English) -> Some English
     | a when a = (string Polish) -> Some Polish
     | _ -> None
+
+let accessTokenFromStorage =
+    localStorage.getItem AccessTokenStorageKey
+    |> function
+    | null -> None
+    | "" -> None
+    | token -> SecurityToken token |> Some
 
 let options: IAuth0Options = { language = "en" }
 
@@ -33,7 +43,7 @@ let init (page: Page option): State * Cmd<Msg> =
           // Application state
           CurrentPage = Option.defaultValue Page.NotFound page
           Locale = Option.defaultValue English localeFromStorage
-          AccessToken = None }
+          AccessToken = accessTokenFromStorage }
     state, Cmd.batch [ Cmd.map AdminMsg adminCmd ]
 
 let onAuthenticated state =
@@ -63,4 +73,5 @@ let update (msg: Msg) (state: State): State * Cmd<Msg> =
         state, Cmd.none
     | Authenticated result ->
         let nextState = { state with AccessToken = result.accessToken |> SecurityToken |> Some }
+        localStorage.setItem (AccessTokenStorageKey, result.accessToken)
         nextState, Cmd.none
