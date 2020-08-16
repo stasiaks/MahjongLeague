@@ -20,7 +20,9 @@ let localeFromStorage =
     | a when a = (string Polish) -> Some Polish
     | _ -> None
 
-let auth0Lock = Auth0Lock.Create (clientId, domain)
+let options: IAuth0Options = { language = "en" }
+
+let auth0Lock = Auth0Lock.Create (clientId, domain, options)
 
 // defines the initial state and initial command (= side-effect) of the application
 let init (page: Page option): State * Cmd<Msg> =
