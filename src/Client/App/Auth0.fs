@@ -17,9 +17,12 @@ type IAuth0UserProfile =
 type IAuthResult =
     abstract accessToken: string with get, set
 
+type IAuth0Options =
+    { language: string }
+
 type IAuth0Lock =
     [<Emit "new $0($1...)">]
-    abstract Create: clientId: string * domain: string -> IAuth0Lock
+    abstract Create: clientId: string * domain: string * options: IAuth0Options -> IAuth0Lock
 
     abstract show: unit -> unit;
 
