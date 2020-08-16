@@ -23,10 +23,19 @@ let counterApi = {
     initialCounter = fun () -> async { return { Value = 42 } }
 }
 
+let counterApiDocs =
+    let docs = Docs.createFor<ICounterApi>()
+    Remoting.documentation "Counter API" [
+        docs.route <@ fun api -> api.initialCounter @>
+        |> docs.alias "Get initial counter"
+        |> docs.description "Returns initial value for counter"
+    ]
+
 let webApp =
     Remoting.createApi()
     |> Remoting.withRouteBuilder Route.builder
     |> Remoting.fromValue counterApi
+    |> Remoting.withDocs "/docs/counter" counterApiDocs
     |> Remoting.buildHttpHandler
 
 let app = application {
