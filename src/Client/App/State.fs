@@ -30,7 +30,17 @@ let accessTokenFromStorage =
     | "" -> None
     | token -> SecurityToken token |> Some
 
-let options: IAuth0Options = { language = "en" }
+let options: Auth0Options =
+    { language = "en"
+      rememberLastLogin = true
+      auth =
+      { audience = "http://localhost:8080/api"
+        redirect = true
+        redirectUrl = "http://localhost:8080/"
+        responseType = "token"
+        autoParseHash = true
+        sso = true
+      } }
 
 let auth0Lock = Auth0Lock.Create (clientId, domain, options)
 
@@ -74,4 +84,13 @@ let update (msg: Msg) (state: State): State * Cmd<Msg> =
     | Authenticated result ->
         let nextState = { state with AccessToken = result.accessToken |> SecurityToken |> Some }
         localStorage.setItem (AccessTokenStorageKey, result.accessToken)
+        nextState, Cmd.none
+    | Logout ->
+        let logoutOptions =
+            { clientId = clientId
+              redirectTo = "http://localhost:8080"
+              federated = true }
+        let nextState = { state with AccessToken = None }
+        localStorage.removeItem AccessTokenStorageKey
+        auth0Lock.logout logoutOptions
         nextState, Cmd.none

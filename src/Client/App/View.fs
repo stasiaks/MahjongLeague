@@ -41,7 +41,7 @@ let signIn state dispatch lstr =
 
     match state.AccessToken with
     | None -> Navbar.Item.a [ dispatchProps Login ] [ lstr SignIn ]
-    | Some _ -> Navbar.Item.div [] [ str "Yo" ]
+    | Some _ -> Navbar.Item.a [ dispatchProps Logout ] [ lstr SignOut ]
 
 let navBrand state dispatch lstr =
     let dispatchProps msg =

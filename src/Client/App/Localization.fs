@@ -9,6 +9,7 @@ type LocalizationToken =
     | Home
     | Admin
     | SignIn
+    | SignOut
     | Language
     | Version
     | PoweredBy
@@ -23,6 +24,7 @@ let localize locale token =
     | English, Home -> "Home"
     | English, Admin -> "Admin"
     | English, SignIn -> "Sign in"
+    | English, SignOut -> "Sign out"
     | English, Language -> "Language"
     | English, Version -> "Version"
     | English, PoweredBy -> "powered by"
@@ -31,6 +33,7 @@ let localize locale token =
     | Polish, Home -> "Strona główna"
     | Polish, Admin -> "Administracja"
     | Polish, SignIn -> "Zaloguj się"
+    | Polish, SignOut -> "Wyloguj się"
     | Polish, Language -> "Język"
     | Polish, Version -> "Wersja"
     | Polish, PoweredBy -> "przy pomocy"

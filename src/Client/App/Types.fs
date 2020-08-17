@@ -16,6 +16,7 @@ type Msg =
     | ChangeLocale of Locale
     | Login
     | Authenticated of IAuthResult
+    | Logout
 
 let adminTranslator =
     Admin.Types.translator
