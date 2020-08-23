@@ -5,12 +5,13 @@ open Shared
 
 type Page =
     | Dashboard
-    | Users
+    | Users of Users.Types.Page
 
 type InternalMsg =
     | Increment
     | Decrement
     | InitialCountLoaded of Counter
+    | UsersMsg of Users.Types.InternalMsg
 
 type OutMsg =
     | NavigateTo of Page
@@ -22,6 +23,11 @@ type Msg =
 type TranslationDictionary<'msg> =
     { OnInternalMsg: InternalMsg -> 'msg
       OnNavigateTo: Page -> 'msg }
+
+let usersTranslator =
+    Users.Types.translator
+        { OnInternalMsg = UsersMsg >> ForSelf
+          OnNavigateTo = Page.Users >> NavigateTo >> ForParent }
 
 let translator dictionary msg =
     match msg with
