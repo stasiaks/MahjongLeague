@@ -11,6 +11,8 @@ type AuthenticationError =
     | TokenInvalid
     | NoAccess
 
+type SecureResult<'a> = Result<'a, AuthenticationError>
+
 let clientId = ""
 
 let domain = ""

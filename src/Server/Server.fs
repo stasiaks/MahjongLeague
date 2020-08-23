@@ -11,6 +11,7 @@ open Shared
 
 open Fable.Remoting.Server
 open Fable.Remoting.Giraffe
+open Shared.Authentication
 
 let tryGetEnv = System.Environment.GetEnvironmentVariable >> function null | "" -> None | x -> Some x
 
@@ -25,9 +26,12 @@ let counterApi = {
 }
 
 let userApi = {
-    GetUsers = fun () -> async { return [ { Id = Guid.NewGuid(); Name = "Kevin" } ] }
-    GetUser = fun id -> async { return { Id = Guid.Parse(id); Name = "Kevin" } }
+    GetUsers = fun _ -> async { return Ok [ { Id = Guid.NewGuid(); Name = "Kevin" } ] }
+    GetUser = fun { Content = id } -> async { return Ok { Id = Guid.Parse(id); Name = "Kevin" } }
 }
+
+[<Literal>]
+let ExampleToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
 
 let counterApiDocs =
     let docs = Docs.createFor<ICounterApi>()
@@ -47,7 +51,7 @@ let userApiDocs =
         docs.route <@ fun api -> api.GetUser @>
         |> docs.alias "Get user"
         |> docs.description "Return user with specific ID"
-        |> docs.example <@ fun api -> api.GetUser <| Guid.NewGuid().ToString() @>
+        |> docs.example <@ fun api -> api.GetUser <| { Token = SecurityToken ExampleToken; Content = Guid.NewGuid().ToString() } @>
     ]
 
 let counterRouter =

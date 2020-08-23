@@ -1,6 +1,6 @@
 namespace Shared
 
-open System
+open Authentication
 
 module Route =
     /// Defines how routes are generated on server and mapped from client
@@ -13,5 +13,5 @@ type ICounterApi =
     { InitialCounter : unit -> Async<Counter> }
 
 type IUserApi =
-    { GetUsers : unit -> Async<User list>
-      GetUser : string -> Async<User> }
+    { GetUsers : SecureRequest<unit> -> Async<SecureResult<User list>>
+      GetUser : SecureRequest<string> -> Async<SecureResult<User>> }
