@@ -3,6 +3,7 @@ module App.Admin.Users.State
 
 open Elmish
 
+open System
 open Shared
 open App.Admin.Users.Types
 
@@ -15,7 +16,11 @@ module Server =
         |> Remoting.buildProxy<IUserApi>
 
 let init() =
-    let state = { Users = [] }
+    let state =
+        { Users =
+            [ { Id = Guid.NewGuid(); Name = "Adam" }
+              { Id = Guid.NewGuid(); Name = "Kevin"}
+              { Id = Guid.NewGuid(); Name = "Asia" } ] }
     state, Cmd.none
 
 let update msg state =
