@@ -45,5 +45,4 @@ let render (state: State) (dispatch: Msg -> unit) lstr page =
         [ Columns.columns []
               [ Column.column [ Column.Width(Screen.All, Column.Is3) ] [ menu dispatch ]
                 Column.column [ Column.Width(Screen.All, Column.Is9) ]
-                    [ main page lstr
-                      counter state dispatch ] ] ]
+                    [ main page lstr ] ] ]
