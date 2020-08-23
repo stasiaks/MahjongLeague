@@ -1,17 +1,13 @@
 
-module App.Admin.Types
+module App.Admin.Users.Types
 
 open Shared
 
 type Page =
-    | Dashboard
-    | Users of Users.Types.Page
+    | List
 
 type InternalMsg =
-    | Increment
-    | Decrement
-    | InitialCountLoaded of Counter
-    | UsersMsg of Users.Types.InternalMsg
+    | Placeholder
 
 type OutMsg =
     | NavigateTo of Page
@@ -24,15 +20,10 @@ type TranslationDictionary<'msg> =
     { OnInternalMsg: InternalMsg -> 'msg
       OnNavigateTo: Page -> 'msg }
 
-let usersTranslator =
-    Users.Types.translator
-        { OnInternalMsg = UsersMsg >> ForSelf
-          OnNavigateTo = Page.Users >> NavigateTo >> ForParent }
-
 let translator dictionary msg =
     match msg with
         | ForSelf message -> dictionary.OnInternalMsg message
         | ForParent (NavigateTo page) -> dictionary.OnNavigateTo page
 
 type State =
-    { Counter: Counter option }
+    { Users: User list }

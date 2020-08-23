@@ -18,7 +18,7 @@ let menu dispatch =
         [ Menu.label [] [ str "General" ]
           Menu.list []
               [ Menu.Item.a [ menuDispatchProp (NavigateTo Dashboard |> ForParent) ] [ str "Dashboard" ]
-                Menu.Item.a [ menuDispatchProp (NavigateTo Users |> ForParent) ] [ str "Users" ] ] ]
+                Menu.Item.a [ menuDispatchProp (NavigateTo <| Users Users.Types.Page.List |> ForParent) ] [ str "Users" ] ] ]
 
 let counter (model: State) (dispatch: Msg -> unit) =
     Field.div [ Field.IsGrouped ]
@@ -38,7 +38,7 @@ let counter (model: State) (dispatch: Msg -> unit) =
 let main page lstr =
     match page with
     | Dashboard -> Dashboard.View.render (DashboardToken >> lstr)
-    | Users -> Users.View.render (UsersToken >> lstr)
+    | Users page -> Users.View.render (UsersToken >> lstr)
 
 let render (state: State) (dispatch: Msg -> unit) lstr page =
     Container.container []
