@@ -18,9 +18,14 @@ module Server =
 
 // defines the initial state and initial command (= side-effect) of the application
 let init() =
-    let state = { Counter = None }
+    let users, usersCmd = Users.State.init()
+    let state =
+        { Counter = None
+          Users = users }
     let loadCountCmd = Cmd.OfAsync.perform Server.api.InitialCounter () InitialCountLoaded
-    state, loadCountCmd
+    state, Cmd.batch
+        [ loadCountCmd
+          Cmd.map UsersMsg usersCmd ]
 
 // The update function computes the next state of the application based on the current state and the incoming events/messages
 // It can also run side-effects (encoded as commands) like calling the server via Http.

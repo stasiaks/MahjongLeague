@@ -35,14 +35,14 @@ let counter (model: State) (dispatch: Msg -> unit) =
                   [ Button.Color IsInfo
                     Button.OnClick(fun _ -> Decrement |> ForSelf |> dispatch) ] [ str "-" ] ] ]
 
-let main page lstr =
+let main state dispatch lstr page =
     match page with
     | Dashboard -> Dashboard.View.render (DashboardToken >> lstr)
-    | Users page -> Users.View.render (UsersToken >> lstr)
+    | Users page -> Users.View.render state.Users dispatch (UsersToken >> lstr) page
 
 let render (state: State) (dispatch: Msg -> unit) lstr page =
     Container.container []
         [ Columns.columns []
               [ Column.column [ Column.Width(Screen.All, Column.Is3) ] [ menu dispatch ]
                 Column.column [ Column.Width(Screen.All, Column.Is9) ]
-                    [ main page lstr ] ] ]
+                    [ main state dispatch lstr page ] ] ]

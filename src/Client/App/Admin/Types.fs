@@ -35,4 +35,5 @@ let translator dictionary msg =
         | ForParent (NavigateTo page) -> dictionary.OnNavigateTo page
 
 type State =
-    { Counter: Counter option }
+    { Counter: Counter option
+      Users: Users.Types.State }
