@@ -12,6 +12,7 @@ type InternalMsg =
     | Decrement
     | InitialCountLoaded of Counter
     | UsersMsg of Users.Types.InternalMsg
+    | OnNavigate
 
 type OutMsg =
     | NavigateTo of Page
