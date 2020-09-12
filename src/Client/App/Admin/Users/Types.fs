@@ -7,7 +7,7 @@ type Page =
     | List
 
 type InternalMsg =
-    | Placeholder
+    | OnNavigate of Page
 
 type OutMsg =
     | NavigateTo of Page
