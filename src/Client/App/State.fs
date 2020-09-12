@@ -62,7 +62,7 @@ let onAuthenticated state =
 
 let onNavigateMsgs page =
     match page with
-    | Page.Admin _ -> [AdminMsg Admin.Types.InternalMsg.OnNavigate]
+    | Page.Admin p -> [Admin.Types.InternalMsg.OnNavigate p |> AdminMsg]
     | _ -> []
 
 // The update function computes the next state of the application based on the current state and the incoming events/messages
