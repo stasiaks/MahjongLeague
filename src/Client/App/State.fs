@@ -60,6 +60,11 @@ let onAuthenticated state =
   let sub dispatch = auth0Lock.on_authenticated (fun result -> result |> Authenticated |> UserMsg |> dispatch)
   Cmd.ofSub sub
 
+let onNavigateMsgs page =
+    match page with
+    | Page.Admin _ -> [AdminMsg Admin.Types.InternalMsg.OnNavigate]
+    | _ -> []
+
 // The update function computes the next state of the application based on the current state and the incoming events/messages
 // It can also run side-effects (encoded as commands) like calling the server via Http.
 // these commands in turn, can dispatch messages to which the update function will react.
@@ -72,8 +77,9 @@ let update (msg: Msg) (state: State): State * Cmd<Msg> =
         nextState, nextCmd
     | NavigateTo destination ->
         let nextState = { state with CurrentPage = destination }
+        let nextCmd = destination |> onNavigateMsgs |> List.map Cmd.ofMsg |> Cmd.batch
         history.pushState ((), "", (toUrl destination))
-        nextState, Cmd.none
+        nextState, nextCmd
     | ChangeLocale locale ->
         let nextState = { state with Locale = locale }
         localStorage.setItem (LocaleStorageKey, (string locale))

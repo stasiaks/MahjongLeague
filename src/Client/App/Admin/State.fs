@@ -22,10 +22,7 @@ let init() =
     let state =
         { Counter = None
           Users = users }
-    let loadCountCmd = Cmd.OfAsync.perform Server.api.InitialCounter () InitialCountLoaded
-    state, Cmd.batch
-        [ loadCountCmd
-          Cmd.map UsersMsg usersCmd ]
+    state, Cmd.map UsersMsg usersCmd
 
 // The update function computes the next state of the application based on the current state and the incoming events/messages
 // It can also run side-effects (encoded as commands) like calling the server via Http.
@@ -41,4 +38,7 @@ let update msg state =
     | _, InitialCountLoaded initialCount ->
         let nextState = { state with Counter = Some initialCount }
         nextState, Cmd.none
+    | _, OnNavigate ->
+        let loadCountCmd = Cmd.OfAsync.perform Server.api.InitialCounter () InitialCountLoaded
+        state, loadCountCmd
     | _ -> state, Cmd.none
