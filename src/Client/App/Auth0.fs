@@ -11,7 +11,7 @@ type IAuth0Error =
   abstract member error: obj with get, set
   abstract member errorDescription: string with get, set
 
-type IAuth0UserProfile =
+type IAuth0UserInfo =
   abstract member email: string with get, set
   abstract member name: string with get, set
   abstract member picture: string with get, set
@@ -48,7 +48,7 @@ type IAuth0Lock =
     [<Emit "$0.on('authenticated', $1...)">]
     abstract on_authenticated: callback: Func<IAuthResult, unit> -> unit
 
-    abstract getProfile: token: string * callback: Func<IAuth0Error, IAuth0UserProfile, unit> -> unit
+    abstract getUserInfo: token: string * callback: Func<IAuth0Error, IAuth0UserInfo, unit> -> unit
 
 let Auth0Lock: IAuth0Lock = importDefault "auth0-lock"
 // fsharplint:enable
