@@ -39,9 +39,14 @@ let signIn state dispatch lstr =
     let dispatchProps msg =
         Navbar.Item.Props [ OnClick(fun _ -> dispatch msg) ]
 
-    match state.AccessToken with
-    | None -> Navbar.Item.a [ dispatchProps Login ] [ lstr SignIn ]
-    | Some _ -> Navbar.Item.a [ dispatchProps Logout ] [ lstr SignOut ]
+    match state.AccessToken, state.UserInfo with
+    | None, _ -> Navbar.Item.a [ dispatchProps Login ] [ lstr SignIn ]
+    | Some _, None -> Navbar.Item.a [ dispatchProps Logout ] [ lstr SignOut ]
+    | Some _, Some userInfo ->
+        Navbar.Item.a [ dispatchProps Logout ]
+            [ img [ Src userInfo.picture; Style [ PaddingRight "0.5em" ] ]
+              sprintf "%s, " userInfo.name |> str
+              lstr SignOut ]
 
 let navBrand state dispatch lstr =
     let dispatchProps msg =

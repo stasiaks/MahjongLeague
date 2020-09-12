@@ -16,6 +16,7 @@ type Msg =
     | ChangeLocale of Locale
     | Login
     | Authenticated of IAuthResult
+    | UserInfoLoaded of IAuth0UserInfo
     | Logout
 
 let adminTranslator =
@@ -29,4 +30,5 @@ type State =
       // App's state
       CurrentPage: Page
       Locale: Locale
-      AccessToken: SecurityToken option }
+      AccessToken: SecurityToken option
+      UserInfo: IAuth0UserInfo option }

@@ -44,6 +44,9 @@ let options: Auth0Options =
 
 let auth0Lock = Auth0Lock.Create (clientId, domain, options)
 
+let getUserInfoSub token dispatch =
+    auth0Lock.getUserInfo (token, (fun err result -> result |> UserInfoLoaded |> dispatch))
+
 // defines the initial state and initial command (= side-effect) of the application
 let init (page: Page option): State * Cmd<Msg> =
     let admin, adminCmd = Admin.State.init()
@@ -53,8 +56,18 @@ let init (page: Page option): State * Cmd<Msg> =
           // Application state
           CurrentPage = Option.defaultValue Page.NotFound page
           Locale = Option.defaultValue English localeFromStorage
-          AccessToken = accessTokenFromStorage }
-    state, Cmd.batch [ Cmd.map AdminMsg adminCmd ]
+          AccessToken = accessTokenFromStorage
+          UserInfo = None }
+
+    let getUserInfoCmd =
+        state.AccessToken
+        |> function
+        | Some (SecurityToken token) -> getUserInfoSub token |> Cmd.ofSub
+        | None -> Cmd.none
+
+    state, Cmd.batch
+        [ Cmd.map AdminMsg adminCmd
+          getUserInfoCmd ]
 
 let onAuthenticated state =
   let sub dispatch = auth0Lock.on_authenticated (fun result -> result |> Authenticated |> UserMsg |> dispatch)
@@ -89,13 +102,18 @@ let update (msg: Msg) (state: State): State * Cmd<Msg> =
         state, Cmd.none
     | Authenticated result ->
         let nextState = { state with AccessToken = result.accessToken |> SecurityToken |> Some }
+        let getUserInfoCmd = getUserInfoSub result.accessToken |> Cmd.ofSub
         localStorage.setItem (AccessTokenStorageKey, result.accessToken)
+        nextState, getUserInfoCmd
+    | UserInfoLoaded userInfo ->
+        let nextState = { state with UserInfo = Some userInfo }
         nextState, Cmd.none
     | Logout ->
         let logoutOptions =
             { clientId = clientId
               redirectTo = "http://localhost:8080"
               federated = true }
+        console.log(logoutOptions)
         let nextState = { state with AccessToken = None }
         localStorage.removeItem AccessTokenStorageKey
         auth0Lock.logout logoutOptions
