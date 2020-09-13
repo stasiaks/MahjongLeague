@@ -7,9 +7,6 @@ type Page =
     | Users of Users.Types.Page
 
 type InternalMsg =
-    | Increment
-    | Decrement
-    | InitialCountLoaded of Counter
     | UsersMsg of Users.Types.InternalMsg
     | OnNavigate of Page
 
@@ -35,5 +32,4 @@ let translator dictionary msg =
         | ForParent (NavigateTo page) -> dictionary.OnNavigateTo page
 
 type State =
-    { Counter: Counter option
-      Users: Users.Types.State }
+    { Users: Users.Types.State }

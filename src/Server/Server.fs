@@ -1,10 +1,6 @@
 open System
 open System.IO
-open System.Threading.Tasks
 
-open Microsoft.AspNetCore.Builder
-open Microsoft.Extensions.DependencyInjection
-open FSharp.Control.Tasks.V2
 open Giraffe
 open Saturn
 open Shared
@@ -21,10 +17,6 @@ let port =
     "SERVER_PORT"
     |> tryGetEnv |> Option.map uint16 |> Option.defaultValue 8085us
 
-let counterApi = {
-    InitialCounter = fun () -> async { return { Value = 42 } }
-}
-
 let createSequentialUser n = { Id = Guid.NewGuid(); Name = sprintf "User %d" n }
 
 let userApi = {
@@ -34,14 +26,6 @@ let userApi = {
 
 [<Literal>]
 let ExampleToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-
-let counterApiDocs =
-    let docs = Docs.createFor<ICounterApi>()
-    Remoting.documentation "Counter API" [
-        docs.route <@ fun api -> api.InitialCounter @>
-        |> docs.alias "Get initial counter"
-        |> docs.description "Returns initial value for counter"
-    ]
 
 let userApiDocs =
     let docs = Docs.createFor<IUserApi>()
@@ -56,13 +40,6 @@ let userApiDocs =
         |> docs.example <@ fun api -> api.GetUser <| { Token = SecurityToken ExampleToken; Content = Guid.NewGuid().ToString() } @>
     ]
 
-let counterRouter =
-    Remoting.createApi()
-    |> Remoting.withRouteBuilder Route.builder
-    |> Remoting.fromValue counterApi
-    |> Remoting.withDocs "/docs/counter" counterApiDocs
-    |> Remoting.buildHttpHandler
-
 let userRouter =
     Remoting.createApi()
     |> Remoting.withRouteBuilder Route.builder
@@ -70,7 +47,7 @@ let userRouter =
     |> Remoting.withDocs "/docs/users" userApiDocs
     |> Remoting.buildHttpHandler
 
-let combinedRouter = choose [ counterRouter; userRouter ]
+let combinedRouter = choose [ userRouter ]
 
 let app = application {
     url ("http://0.0.0.0:" + port.ToString() + "/")
