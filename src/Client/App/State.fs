@@ -82,9 +82,13 @@ let onNavigateMsgs page =
 // It can also run side-effects (encoded as commands) like calling the server via Http.
 // these commands in turn, can dispatch messages to which the update function will react.
 let update (msg: Msg) (state: State): State * Cmd<Msg> =
+    let createSecureRequest =
+        match state.AccessToken with
+        | None -> (fun content -> { Token = (SecurityToken ""); Content = content }) // TODO: Handle lack of token!
+        | Some token -> (fun content -> { Token = token; Content = content })
     match msg with
     | AdminMsg msg ->
-        let nextAdminState, adminCmd = Admin.State.update msg state.Admin
+        let nextAdminState, adminCmd = Admin.State.update msg state.Admin createSecureRequest
         let nextState = { state with Admin = nextAdminState }
         let nextCmd = Cmd.map AdminMsg adminCmd
         nextState, nextCmd

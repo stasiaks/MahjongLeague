@@ -1,13 +1,17 @@
-
 module App.Admin.Users.Types
 
 open Shared
+open Shared.Authentication
 
 type Page =
     | List
 
+type ApiResponseMsg =
+    | GetUsers of SecureResult<User list>
+
 type InternalMsg =
     | OnNavigate of Page
+    | OnApiResponse of ApiResponseMsg
 
 type OutMsg =
     | NavigateTo of Page
