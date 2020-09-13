@@ -1,4 +1,3 @@
-
 module App.Auth0
 
 open Fable.Core

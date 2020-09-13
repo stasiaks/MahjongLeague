@@ -1,10 +1,10 @@
-
 module App.Admin.Users.State
 
 open Elmish
 
 open System
 open Shared
+open Shared.Authentication
 open App.Admin.Users.Types
 
 module Server =
@@ -20,14 +20,18 @@ let init() =
         { Users = [] }
     state, Cmd.none
 
-let update msg state =
+let update msg state createSecureRequest =
     match state, msg with
     | _, OnNavigate page ->
-        let nextState =
-            { state with
-                Users =
-                    [ { Id = Guid.NewGuid(); Name = "Adam" }
-                      { Id = Guid.NewGuid(); Name = "Kevin"}
-                      { Id = Guid.NewGuid(); Name = "Asia" } ] }
-        nextState, Cmd.none
+        let request = createSecureRequest()
+        let loadCountCmd = Cmd.OfAsync.perform Server.api.GetUsers request (GetUsers >> OnApiResponse)
+        state, loadCountCmd
+    | _, OnApiResponse msg ->
+        match msg with
+        | GetUsers (Ok result) ->
+            let nextState = { state with Users = result }
+            nextState, Cmd.none
+        | GetUsers (Error err) ->
+            Browser.Dom.console.log(err)
+            state, Cmd.none
     | _ -> state, Cmd.none

@@ -25,8 +25,10 @@ let counterApi = {
     InitialCounter = fun () -> async { return { Value = 42 } }
 }
 
+let createSequentialUser n = { Id = Guid.NewGuid(); Name = sprintf "User %d" n }
+
 let userApi = {
-    GetUsers = fun _ -> async { return Ok [ { Id = Guid.NewGuid(); Name = "Kevin" } ] }
+    GetUsers = fun _ -> async { return Seq.init (Random().Next(2,6)) (fun n -> createSequentialUser n) |> Seq.toList |> Ok }
     GetUser = fun { Content = id } -> async { return Ok { Id = Guid.Parse(id); Name = "Kevin" } }
 }
 

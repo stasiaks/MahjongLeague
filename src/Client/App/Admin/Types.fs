@@ -1,4 +1,3 @@
-
 module App.Admin.Types
 
 open Shared
