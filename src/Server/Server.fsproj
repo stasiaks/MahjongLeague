@@ -6,10 +6,16 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="paket.references" />
+    <!-- Shared -->
     <Compile Include="../Shared/Authentication.fs" />
     <Compile Include="../Shared/Types.fs" />
     <Compile Include="../Shared/User.fs" />
     <Compile Include="../Shared/Api.fs" />
+    <!-- User -->
+    <Compile Include="User/Api.fs" />
+    <Compile Include="User/Documentation.fs" />
+    <Compile Include="User/Router.fs" />
+    <!-- Server -->
     <Compile Include="Server.fs" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />

@@ -8,11 +8,13 @@
     <None Include="index.html" />
     <None Include="paket.references" />
     <None Include="style.scss" />
+    <!-- Shared -->
     <Compile Include="../Shared/Utility.fs" />
     <Compile Include="../Shared/Authentication.fs" />
     <Compile Include="../Shared/Types.fs" />
     <Compile Include="../Shared/User.fs" />
     <Compile Include="../Shared/Api.fs" />
+    <!-- Utilities -->
     <Compile Include="Version.fs" />
     <Compile Include="Locale.fs" />
     <!-- App/Home -->
