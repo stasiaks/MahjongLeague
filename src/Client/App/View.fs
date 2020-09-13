@@ -43,10 +43,16 @@ let signIn state dispatch lstr =
     | None, _ -> Navbar.Item.a [ dispatchProps Login ] [ lstr SignIn ]
     | Some _, None -> Navbar.Item.a [ dispatchProps Logout ] [ lstr SignOut ]
     | Some _, Some userInfo ->
-        Navbar.Item.a [ dispatchProps Logout ]
-            [ img [ Src userInfo.picture; Style [ PaddingRight "0.5em" ] ]
-              sprintf "%s, " userInfo.name |> str
-              lstr SignOut ]
+        Navbar.Item.div
+            [ Navbar.Item.HasDropdown
+              Navbar.Item.IsHoverable ]
+            [ Navbar.Link.div []
+                [ img
+                    [ Src userInfo.picture
+                      Style [ PaddingRight "0.5em" ] ]
+                  str userInfo.name ]
+              Navbar.Dropdown.div []
+                [ Navbar.Item.a [ dispatchProps Logout ] [ lstr SignOut ] ] ]
 
 let navBrand state dispatch lstr =
     let dispatchProps msg =
