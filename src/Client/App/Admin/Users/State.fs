@@ -2,9 +2,7 @@ module App.Admin.Users.State
 
 open Elmish
 
-open System
 open Shared
-open Shared.Authentication
 open App.Admin.Users.Types
 
 module Server =
@@ -34,4 +32,3 @@ let update msg state createSecureRequest =
         | GetUsers (Error err) ->
             Browser.Dom.console.log(err)
             state, Cmd.none
-    | _ -> state, Cmd.none
