@@ -13,7 +13,7 @@ let createSequentialUser n =
 
 let getAllPermissions (claims: ClaimsPrincipal) =
     claims.FindAll "permissions"
-    |> Seq.map (fun claim -> claim.Value)
+    |> Seq.map (fun claim -> Permission claim.Value)
 
 let handleAuth { Token = token; Content = content } requiredPermissions createResult =
     validateToken token
@@ -27,14 +27,14 @@ let api =
     { GetUsers =
           fun request ->
               async {
-                  return handleAuth request [ "Users.Read" ] (fun content ->
+                  return handleAuth request [ Permissions.Users.Read ] (fun content ->
                              Seq.init (Random().Next(2, 6)) (fun n -> createSequentialUser n)
                              |> Seq.toList)
               }
       GetUser =
           fun request ->
               async {
-                  return handleAuth request [ "Users.Read" ] (fun content ->
+                  return handleAuth request [ Permissions.Users.Read ] (fun content ->
                              { Id = Guid.Parse(content)
                                Name = "Kevin" })
               } }
