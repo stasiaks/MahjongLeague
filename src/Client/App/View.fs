@@ -9,6 +9,7 @@ open Locale
 open App.Types
 open App.Localization
 open App.JwtDecode
+open Shared
 open Shared.Authentication
 
 let safeComponents lstr =
@@ -87,8 +88,8 @@ let permissionContainer (token: SecurityToken option) (requiredPermissions: stri
     match token with
     | None -> div [] []
     | Some (SecurityToken token) ->
-        let tokenPermissions = (JwtDecode.DecodePayload token).permissions
-        Seq.forall (fun permission -> Seq.contains permission tokenPermissions) requiredPermissions
+        (JwtDecode.DecodePayload token).permissions
+        |> Seq.containsAll requiredPermissions
         |> function
         | true -> element
         | false -> div [] []
