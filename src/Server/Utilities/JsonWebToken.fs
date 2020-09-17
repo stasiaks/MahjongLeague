@@ -29,7 +29,8 @@ let issuerSigningKeyResolver = // TODO: Make it not so naive
         |> JObject.Parse
         |> fun x -> x.SelectToken "keys"
         |> fun x -> x.Values()
-        |> Seq.map (string >> JsonWebKey.Create >> (fun x -> x :> SecurityKey)))
+        |> Seq.map (string >> JsonWebKey.Create)
+        |> Seq.cast<SecurityKey> )
 
 let validateToken (SecurityToken token) =
     let validationParameters = TokenValidationParameters()
