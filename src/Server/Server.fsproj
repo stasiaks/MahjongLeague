@@ -7,10 +7,13 @@
   <ItemGroup>
     <None Include="paket.references" />
     <!-- Shared -->
+    <Compile Include="../Shared/Utility.fs" />
     <Compile Include="../Shared/Authentication.fs" />
     <Compile Include="../Shared/Types.fs" />
     <Compile Include="../Shared/User.fs" />
     <Compile Include="../Shared/Api.fs" />
+    <!-- Utilities -->
+    <Compile Include="Utilities/JsonWebToken.fs" />
     <!-- User -->
     <Compile Include="User/Api.fs" />
     <Compile Include="User/Documentation.fs" />
