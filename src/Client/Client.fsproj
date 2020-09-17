@@ -41,6 +41,7 @@
     <!-- App -->
     <Compile Include="App/Localization.fs" />
     <Compile Include="App/Auth0.fs" />
+    <Compile Include="App/JwtDecode.fs" />
     <Compile Include="App/Types.fs" />
     <Compile Include="App/Urls.fs" />
     <Compile Include="App/View.fs" />
