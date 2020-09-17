@@ -16,3 +16,4 @@ type SecureResult<'a> = Result<'a, AuthenticationError>
 let clientId = ""
 
 let domain = ""
+let audience = "http://localhost:8080/api"
