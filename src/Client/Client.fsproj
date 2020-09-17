@@ -12,6 +12,7 @@
     <Compile Include="../Shared/Utility.fs" />
     <Compile Include="../Shared/Extensions.fs" />
     <Compile Include="../Shared/Authentication.fs" />
+    <Compile Include="../Shared/Permissions.fs" />
     <Compile Include="../Shared/Types.fs" />
     <Compile Include="../Shared/User.fs" />
     <Compile Include="../Shared/Api.fs" />

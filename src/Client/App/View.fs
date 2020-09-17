@@ -68,7 +68,7 @@ let navBrand state dispatch lstr permissionContainer =
                     [ Navbar.Start.div []
                           [ Navbar.Item.a [ dispatchProps (NavigateTo Page.Home) ] [ lstr Home ]
                             permissionContainer
-                                Seq.empty
+                                [ Permissions.Users.Read ]
                                 <| Navbar.Item.a [ dispatchProps (NavigateTo <| Page.Admin Admin.Types.Page.Dashboard) ] [ lstr Admin ] ]
                       Navbar.End.div []
                           [ Navbar.Item.div
@@ -84,11 +84,12 @@ let navBrand state dispatch lstr permissionContainer =
                                         Navbar.Item.a [ dispatchProps (ChangeLocale Polish) ] [ str "Polski" ] ] ]
                             signIn state dispatch lstr ] ] ] ]
 
-let permissionContainer (token: SecurityToken option) (requiredPermissions: string seq) (element: ReactElement) =
+let permissionContainer (token: SecurityToken option) (requiredPermissions: Permission seq) (element: ReactElement) =
     match token with
     | None -> div [] []
     | Some (SecurityToken token) ->
         (JwtDecode.DecodePayload token).permissions
+        |> Seq.map Permission
         |> Seq.containsAll requiredPermissions
         |> function
         | true -> element
