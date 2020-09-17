@@ -8,6 +8,8 @@ open Fulma
 open Locale
 open App.Types
 open App.Localization
+open App.JwtDecode
+open Shared.Authentication
 
 let safeComponents lstr =
     let components =
@@ -54,7 +56,7 @@ let signIn state dispatch lstr =
               Navbar.Dropdown.div []
                 [ Navbar.Item.a [ dispatchProps Logout ] [ lstr SignOut ] ] ]
 
-let navBrand state dispatch lstr =
+let navBrand state dispatch lstr permissionContainer =
     let dispatchProps msg =
         Navbar.Item.Props [ OnClick(fun _ -> dispatch msg) ]
 
@@ -64,8 +66,9 @@ let navBrand state dispatch lstr =
                 Navbar.menu []
                     [ Navbar.Start.div []
                           [ Navbar.Item.a [ dispatchProps (NavigateTo Page.Home) ] [ lstr Home ]
-                            Navbar.Item.a [ dispatchProps (NavigateTo(Page.Admin Admin.Types.Page.Dashboard)) ]
-                                [ lstr Admin ] ]
+                            permissionContainer
+                                Seq.empty
+                                <| Navbar.Item.a [ dispatchProps (NavigateTo <| Page.Admin Admin.Types.Page.Dashboard) ] [ lstr Admin ] ]
                       Navbar.End.div []
                           [ Navbar.Item.div
                               [ Navbar.Item.HasDropdown
@@ -80,7 +83,17 @@ let navBrand state dispatch lstr =
                                         Navbar.Item.a [ dispatchProps (ChangeLocale Polish) ] [ str "Polski" ] ] ]
                             signIn state dispatch lstr ] ] ] ]
 
-let main (state: State) dispatch lstr =
+let permissionContainer (token: SecurityToken option) (requiredPermissions: string seq) (element: ReactElement) =
+    match token with
+    | None -> div [] []
+    | Some (SecurityToken token) ->
+        let tokenPermissions = (JwtDecode.DecodePayload token).permissions
+        Seq.forall (fun permission -> Seq.contains permission tokenPermissions) requiredPermissions
+        |> function
+        | true -> element
+        | false -> div [] []
+
+let main (state: State) dispatch lstr permissionContainer =
     match state.CurrentPage with
     | Page.Home -> Home.View.render (HomeToken >> lstr)
     | Page.Admin page -> Admin.View.render state.Admin (adminTranslator >> dispatch) (AdminToken >> lstr) page
@@ -88,7 +101,8 @@ let main (state: State) dispatch lstr =
 
 let render (state: State) (dispatch: Msg -> unit) =
     let lstr token = localize state.Locale token |> str
+    let permissionContainer = state.AccessToken |> permissionContainer
     div []
-        [ navBrand state dispatch lstr
-          main state dispatch lstr
+        [ navBrand state dispatch lstr permissionContainer
+          main state dispatch lstr permissionContainer
           Container.container [] [ footer [] [ safeComponents lstr ] ] ]
