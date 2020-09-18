@@ -7,8 +7,6 @@ open Logary.Adapters.Facade
 open Logary.Targets
 
 let server = testList "Server" [
-    testCase "Failing test case" <| fun _ ->
-        Expect.isFalse true "Failed!"
 ]
 
 let all =
