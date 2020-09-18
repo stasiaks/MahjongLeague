@@ -10,15 +10,14 @@ var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
-var MiniCssExtractPlugin = require('mini-css-extract-plugin');
+var MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 var CONFIG = {
     // The tags to include the generated JS and CSS will be automatically injected in the HTML template
     // See https://github.com/jantimon/html-webpack-plugin
     indexHtmlTemplate: './src/Client/index.html',
     fsharpEntry: './src/Client/Client.fsproj',
-    cssEntry: './src/Client/style.scss',
-    outputDir: './src/Client/deploy',
+    outputDir: './deploy/public',
     assetsDir: './src/Client/public',
     devServerPort: 8080,
     // When using webpack-dev-server, you may need to redirect some calls
@@ -35,8 +34,6 @@ var CONFIG = {
             ws: true
            }
        },
-    // Use babel-preset-env to generate JS compatible with most-used browsers.
-    // More info at https://babeljs.io/docs/en/next/babel-preset-env.html
     babel: {
         presets: [
             ['@babel/preset-env', {
@@ -53,7 +50,9 @@ var CONFIG = {
 
 // If we're running the webpack-dev-server, assume we're in development mode
 var isProduction = !process.argv.find(v => v.indexOf('webpack-dev-server') !== -1);
-console.log('Bundling for ' + (isProduction ? 'production' : 'development') + '...');
+var environment = isProduction ? 'production' : 'development';
+process.env.NODE_ENV = environment;
+console.log('Bundling for ' + environment + '...');
 
 // The HtmlWebpackPlugin allows us to use a template for the index.html page
 // and automatically injects <script> or <link> tags for generated bundles.
@@ -69,18 +68,14 @@ module.exports = {
     // have a faster HMR support. In production bundle styles together
     // with the code because the MiniCssExtractPlugin will extract the
     // CSS in a separate files.
-    entry: isProduction ? {
-        app: [resolve(CONFIG.fsharpEntry), resolve(CONFIG.cssEntry)]
-    } : {
-            app: [resolve(CONFIG.fsharpEntry)],
-            style: [resolve(CONFIG.cssEntry)]
-        },
+    entry: {
+        app: resolve(CONFIG.fsharpEntry)
+    },
     // Add a hash to the output file name in production
     // to prevent browser caching if code changes
     output: {
         path: resolve(CONFIG.outputDir),
-        filename: isProduction ? '[name].[hash].js' : '[name].js',
-        publicPath: "/"
+        filename: isProduction ? '[name].[hash].js' : '[name].js'
     },
     mode: isProduction ? 'production' : 'development',
     devtool: isProduction ? 'source-map' : 'eval-source-map',
@@ -98,8 +93,8 @@ module.exports = {
     //      - HotModuleReplacementPlugin: Enables hot reloading when code changes without refreshing
     plugins: isProduction ?
         commonPlugins.concat([
-            new MiniCssExtractPlugin({ filename: 'style.[hash].css' }),
-            new CopyWebpackPlugin([{ from: resolve(CONFIG.assetsDir) }]),
+            new MiniCssExtractPlugin({ filename: 'style.[name].[hash].css' }),
+            new CopyWebpackPlugin({ patterns: [{ from: resolve(CONFIG.assetsDir) }]}),
         ])
         : commonPlugins.concat([
             new webpack.HotModuleReplacementPlugin(),
@@ -110,7 +105,6 @@ module.exports = {
     },
     // Configuration for webpack-dev-server
     devServer: {
-        historyApiFallback: true,
         publicPath: '/',
         contentBase: resolve(CONFIG.assetsDir),
         host: '0.0.0.0',
@@ -150,11 +144,8 @@ module.exports = {
                         : 'style-loader',
                     'css-loader',
                     {
-                        loader: 'resolve-url-loader',
-                    },
-                    {
-                      loader: 'sass-loader',
-                      options: { implementation: require('sass') }
+                        loader: 'sass-loader',
+                        options: { implementation: require('sass') }
                     }
                 ],
             },
