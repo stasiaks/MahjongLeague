@@ -23,3 +23,5 @@ jobs:
       run: dotnet restore
     - name: Run FAKE
       run: dotnet fake build
+    - name: Run Server tests
+      run: dotnet run --project tests/Server --framework netcoreapp3.1
