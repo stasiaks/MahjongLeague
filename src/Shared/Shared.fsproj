@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Utility.fs" />
+    <Compile Include="Extensions.fs" />
+    <Compile Include="Authentication.fs" />
+    <Compile Include="Permissions.fs" />
+    <Compile Include="Types.fs" />
+    <Compile Include="User.fs" />
+    <Compile Include="Api.fs" />
+  </ItemGroup>
+
+</Project>
