@@ -4,24 +4,29 @@
 
 You'll need to install the following pre-requisites in order to build SAFE applications
 
-* The [.NET Core SDK](https://www.microsoft.com/net/download).
-* The [Yarn](https://yarnpkg.com/lang/en/docs/install/) package manager.
+* The [.NET Core SDK](https://www.microsoft.com/net/download) 3.1 or higher.
+* [npm](https://nodejs.org/en/download/) package manager.
 * [Node LTS](https://nodejs.org/en/download/) installed for the front end components.
 
 ## Work with the application
 
 Before you run the project **for the first time only** you should install its local tools with this command:
 
-```bash
+```sh
 dotnet tool restore
 ```
-
-
 To concurrently run the server and the client components in watch mode use the following command:
 
-```bash
+```sh
 dotnet fake build -t run
 ```
 
+Then open [`http://localhost:8080`](http://localhost:8080) in your browser.
 
-You can use the included `Dockerfile` and `build.fsx` script to deploy your application as Docker container. You can find more regarding this topic in the [official template documentation](https://safe-stack.github.io/docs/template-docker/).
+To run concurrently server and client tests in watch mode (run in a new terminal):
+
+```sh
+dotnet fake build -t runtests
+```
+
+Client tests are available under [`http://localhost:8081`](http://localhost:8081) in your browser and server tests are running in watch mode in console.
