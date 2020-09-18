@@ -1,4 +1,2 @@
-group Server
-    FSharp.Core
-    Saturn
-    Fable.Remoting.Giraffe
+Saturn
+Fable.Remoting.Giraffe
