@@ -4,11 +4,14 @@ open Elmish.UrlParser
 
 open App.Admin.Users.Types
 
+let listSegment = "list"
+
 let toUrl page =
     match page with
-    | List -> ""
+    | List -> listSegment
 
-let parseSegment state =
-    custom "users" (function
-        | s when s = toUrl List -> Ok List
-        | _ -> Error "Can't parse users subpage") state
+let parsers binding parseBefore =
+    seq {
+        map (binding Page.List) (parseBefore)
+        map (binding Page.List) (parseBefore </> s listSegment)
+    }

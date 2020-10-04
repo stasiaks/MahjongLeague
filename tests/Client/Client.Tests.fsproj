@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Utility.fs" />
     <Compile Include="Client.Tests.fs" />
   </ItemGroup>
   <ItemGroup>
