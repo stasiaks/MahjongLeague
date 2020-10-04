@@ -47,6 +47,11 @@ let auth0Lock = Auth0Lock.Create (clientId, domain, options)
 let getUserInfoSub token dispatch =
     auth0Lock.getUserInfo (token, (fun err result -> result |> UserInfoLoaded |> dispatch))
 
+let onNavigateMsgs page =
+    match page with
+    | Page.Admin p -> [Admin.Types.InternalMsg.OnNavigate p |> AdminMsg]
+    | _ -> []
+
 // defines the initial state and initial command (= side-effect) of the application
 let init (page: Page option): State * Cmd<Msg> =
     let admin, adminCmd = Admin.State.init()
@@ -65,18 +70,16 @@ let init (page: Page option): State * Cmd<Msg> =
         | Some (SecurityToken token) -> getUserInfoSub token |> Cmd.ofSub
         | None -> Cmd.none
 
+    let onNavigateCmd = onNavigateMsgs state.CurrentPage |> List.map Cmd.ofMsg |> Cmd.batch
+
     state, Cmd.batch
         [ Cmd.map AdminMsg adminCmd
-          getUserInfoCmd ]
+          getUserInfoCmd
+          onNavigateCmd ]
 
 let onAuthenticated state =
   let sub dispatch = auth0Lock.on_authenticated (fun result -> result |> Authenticated |> UserMsg |> dispatch)
   Cmd.ofSub sub
-
-let onNavigateMsgs page =
-    match page with
-    | Page.Admin p -> [Admin.Types.InternalMsg.OnNavigate p |> AdminMsg]
-    | _ -> []
 
 // The update function computes the next state of the application based on the current state and the incoming events/messages
 // It can also run side-effects (encoded as commands) like calling the server via Http.
