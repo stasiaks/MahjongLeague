@@ -1,13 +1,9 @@
 module Server.Tests
 
 open Expecto
-open Hopac
-open Logary.Configuration
-open Logary.Adapters.Facade
-open Logary.Targets
+open Swensen.Unquote
 
-let server = testList "Server" [
-]
+let server = testList "Server" []
 
 let all =
     testList "All"
@@ -18,12 +14,4 @@ let all =
 
 [<EntryPoint>]
 let main argv =
-    let logary =
-        Config.create "Server.Tests" "localhost"
-        |> Config.targets [ LiterateConsole.create LiterateConsole.empty "console" ]
-        |> Config.processing (Events.events |> Events.sink ["console";])
-        |> Config.build
-        |> run
-    LogaryFacadeAdapter.initialise<Expecto.Logging.Logger> logary
-
     runTestsWithCLIArgs [] argv all
