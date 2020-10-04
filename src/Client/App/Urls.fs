@@ -13,17 +13,21 @@ let notFoundSegment = "404"
 let toUrl page =
     match page with
     | Page.Home -> homeSegment
-    | Page.Admin t -> sprintf "%s/%s" <| adminSegment <| Admin.Urls.toUrl t
+    | Page.Admin t ->
+        sprintf "%s/%s"
+        <| adminSegment
+        <| Admin.Urls.toUrl t
     | Page.NotFound -> notFoundSegment
     |> (+) "/"
 
 let parser: Parser<Page option> =
-    oneOf
-        [ map Page.Home (s "") // Default page
-          map Page.Home (s homeSegment)
-          map (Page.Admin Admin.Types.Page.Dashboard) (s adminSegment) // Default for incomplete URL
-          map Page.Admin (s adminSegment </> Admin.Urls.parseSegment)
-          map Page.NotFound (s notFoundSegment) ]
+    seq {
+        map Page.Home (s "") // Default page
+        map Page.Home (s homeSegment)
+        map Page.NotFound (s notFoundSegment)
+        yield! Admin.Urls.parsers Page.Admin (s adminSegment)
+    }
+    |> (List.ofSeq >> oneOf)
     |> parsePath
 
 let urlUpdate route state =
