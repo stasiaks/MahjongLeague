@@ -11,10 +11,10 @@ let client = testList "Client" [
         let expectedLocale = Locale.English
 
         let
-            { CurrentPage = acutalPage
+            { CurrentPage = actualPage
               Locale = actualLocale } , _ = init(None)
 
-        Expect.equal expectedPage acutalPage "Default page should be NotFound"
+        Expect.equal expectedPage actualPage "Default page should be NotFound"
         Expect.equal expectedLocale actualLocale "Default locale should be English"
 ]
 
