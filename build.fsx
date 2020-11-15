@@ -38,9 +38,49 @@ let dotnet cmd workingDir =
     let result = DotNet.exec (DotNet.Options.withWorkingDirectory workingDir) cmd ""
     if result.ExitCode <> 0 then failwithf "'dotnet %s' failed in %s" cmd workingDir
 
+let dotnetOutput cmd workingDir =
+    let dotnetPath =
+        match ProcessUtils.tryFindFileOnPath "dotnet" with
+        | Some path -> path
+        | None ->
+            "npm was not found in path. Please install it and make sure it's available from your path. " +
+            "See https://safe-stack.github.io/docs/quickstart/#install-pre-requisites for more info"
+            |> failwith
+
+    let arguments = cmd |> String.split ' ' |> Arguments.OfArgs
+    Command.RawCommand (dotnetPath, arguments)
+    |> CreateProcess.fromCommand
+    |> CreateProcess.withWorkingDirectory workingDir
+    |> CreateProcess.ensureExitCode
+    |> CreateProcess.redirectOutput
+    |> Proc.run
+
 Target.create "Clean" (fun _ -> Shell.cleanDir deployDir)
 
 Target.create "InstallClient" (fun _ -> npm "install" ".")
+
+Target.create "CopyLib" (fun _ ->
+    let nugetRootPath =
+        dotnetOutput "nuget locals global-packages -l" serverPath
+        |> fun result -> result.Result.Output
+        |> String.split ' '
+        |> List.last
+        |> String.trim
+    let libDirectory = sprintf "%s/lib" serverPath
+
+    Directory.ensure libDirectory
+    [ "System.Runtime.CompilerServices.Unsafe", "5.0.0/lib/netstandard2.0"]
+    |> List.map (fun pair ->
+        let nugetDll = sprintf "%s.dll" <| fst pair
+        let pathFromNugetRoot = sprintf "%s/%s" (fst pair |> String.toLower) (snd pair)
+        let fullPath = sprintf "%s/%s/%s" nugetRootPath pathFromNugetRoot nugetDll
+
+        let content = File.readAsBytes fullPath
+        File.writeBytes (sprintf "%s/%s" libDirectory nugetDll) content
+        Trace.trace <| sprintf "Copied %s into lib for type provider" nugetDll
+        )
+    |> ignore
+)
 
 Target.create "Bundle" (fun _ ->
     dotnet (sprintf "publish -c Release -o \"%s\"" deployDir) serverPath
@@ -83,6 +123,7 @@ Target.create "RunTests" (fun _ ->
 open Fake.Core.TargetOperators
 
 "Clean"
+    ==> "CopyLib"
     ==> "InstallClient"
     ==> "Bundle"
     ==> "Azure"
