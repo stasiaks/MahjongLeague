@@ -1,11 +1,38 @@
 module User.Api
 
 open System
-
+open System.Security.Claims
+open FSharp.Data.Sql
+open Utilities.JsonWebToken
 open Shared
 open Shared.Authentication
-open Utilities.JsonWebToken
-open System.Security.Claims
+
+[<Literal>]
+let DbVendor = Common.DatabaseProviderTypes.POSTGRESQL
+
+[<Literal>]
+let ConnString =
+    "Host=localhost;Database=mahjong;Username=test_app;Password=pass"
+
+[<Literal>]
+let ResPath = __SOURCE_DIRECTORY__ + @"./lib"
+
+[<Literal>]
+let Schema = "mahjong"
+
+[<Literal>]
+let IndividualAmount = 1000
+
+[<Literal>]
+let UseOptionTypes = true
+
+type DB =
+    SqlDataProvider<DatabaseVendor=DbVendor, ConnectionString=ConnString, ResolutionPath=ResPath, IndividualsAmount=IndividualAmount, UseOptionTypes=UseOptionTypes, Owner=Schema>
+
+let context =
+    DB.GetDataContext(selectOperations = SelectOperations.DatabaseSide)
+
+let database = context.Mahjong
 
 let createSequentialUser n =
     { Id = Guid.NewGuid()
@@ -28,7 +55,10 @@ let api =
           fun request ->
               async {
                   return handleAuth request [ Permissions.Users.Read ] (fun content ->
-                             Seq.init (Random().Next(2, 6)) (fun n -> createSequentialUser n)
+                             query {
+                                 for u in database.Users do
+                                     select { Id = u.Id; Name = u.Name }
+                             }
                              |> Seq.toList)
               }
       GetUser =
