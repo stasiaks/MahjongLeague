@@ -14,6 +14,8 @@ jobs:
       # Image with database for SQLProvider
       postgres:
         image: postgres
+        volumes: 
+          - /docker-entrypoint-initdb.d:/github/workspace/scripts/database_init
         env:
           POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
