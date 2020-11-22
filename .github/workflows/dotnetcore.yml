@@ -10,24 +10,11 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    services:
-      # Image with database for SQLProvider
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_USER: postgres
-          POSTGRES_DB: mahjong
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
 
     steps:
     - uses: actions/checkout@v2
+    - name: Run PostgreSQL for type provider
+      run: docker run -p 5432:5432 -d -e POSTGRES_PASSWORD=test_app -e POSTGRES_USER=pass -e POSTGRES_DB=mahjong -v pgdata:/var/lib/postgresql/data -v ${{ github.workspace }}/scripts/database_init:/docker-entrypoint-initdb.d postgres
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
