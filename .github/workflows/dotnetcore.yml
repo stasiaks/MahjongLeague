@@ -31,13 +31,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: echo
-      run: echo ${GITHUB_WORKSPACE}
-    - name: List root
-      run: ls $GITHUB_WORKSPACE -al
-    - name: echo
-      run: echo ${{ github.workspace }}
-    - name: List root
-      run: ls ${{ github.workspace }} -al
+      run: ls /docker-entrypoint-initdb.d
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
