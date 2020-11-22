@@ -21,6 +21,7 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_DB: mahjong
         options: >-
+          --name posttest
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
@@ -30,8 +31,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: echo
-      run: ls /docker-entrypoint-initdb.d
+    - name: ls
+      run: docker exec posttest ls
+    - name: ls init
+      run: docker exec posttest ls docker-entrypoint-initdb.d
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
