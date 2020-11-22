@@ -30,12 +30,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: List
+    - name: PWD
+      run: pwd
+    - name: List root
       run: ls / -al
-    - name: List github
-      run: ls /github -al
-    - name: List /github/workspace
-      run: ls github/workspace -al
+    - name: List current
+      run: ls -al
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
