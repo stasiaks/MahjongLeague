@@ -10,6 +10,23 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    services:
+      # Image with database for SQLProvider
+      postgres:
+        image: postgres
+        volumes:
+          - /docker-entrypoint-initdb.d:/github/workspace/scripts/database_init
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_DB: mahjong
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
 
     steps:
     - uses: actions/checkout@v2
