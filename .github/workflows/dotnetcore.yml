@@ -15,7 +15,7 @@ jobs:
     - uses: actions/checkout@v2
       
     - name: Run PostgreSQL for type provider
-      run: docker run -p 5433:5432 -d --name posttest -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -e POSTGRES_DB=mahjong -v pgdata:/var/lib/postgresql/data -v ${{ github.workspace }}/scripts/database_init:/docker-entrypoint-initdb.d postgres
+      run: docker run -p 5432:5432 -d --name posttest -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -e POSTGRES_DB=mahjong -v pgdata:/var/lib/postgresql/data -v ${{ github.workspace }}/scripts/database_init:/docker-entrypoint-initdb.d postgres
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
