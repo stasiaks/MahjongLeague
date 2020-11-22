@@ -15,7 +15,7 @@ jobs:
       postgres:
         image: postgres
         volumes: 
-          - /docker-entrypoint-initdb.d:/github/workspace/scripts/database_init
+          - /docker-entrypoint-initdb.d:${GITHUB_WORKSPACE}/scripts/database_init
         env:
           POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
@@ -30,12 +30,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: PWD
-      run: pwd
+    - name: echo
+      run: echo ${GITHUB_WORKSPACE}
     - name: List root
-      run: ls / -al
-    - name: List current
-      run: ls -al
+      run: ls $GITHUB_WORKSPACE -al
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
@@ -48,3 +46,4 @@ jobs:
       run: dotnet fake build
     - name: Run Server tests
       run: dotnet run --project tests/Server --framework netcoreapp3.1
+      
