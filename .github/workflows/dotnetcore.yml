@@ -15,7 +15,7 @@ jobs:
       postgres:
         image: postgres
         volumes: 
-          - /docker-entrypoint-initdb.d:${{ github.workspace }}/scripts/database_init
+          - ${{ github.workspace }}/scripts/database_init:/docker-entrypoint-initdb.d
         env:
           POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
@@ -31,8 +31,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: ls
-      run: docker exec posttest ls
     - name: ls init
       run: docker exec posttest ls docker-entrypoint-initdb.d
     - name: Setup .NET Core
