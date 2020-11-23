@@ -19,6 +19,10 @@
     <Compile Include="League/Api.fs" />
     <Compile Include="League/Documentation.fs" />
     <Compile Include="League/Router.fs" />
+    <!-- Season -->
+    <Compile Include="Season/Api.fs" />
+    <Compile Include="Season/Documentation.fs" />
+    <Compile Include="Season/Router.fs" />
     <!-- Server -->
     <Compile Include="Server.fs" />
   </ItemGroup>
