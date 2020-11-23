@@ -1,4 +1,4 @@
-namespace Shared
+module Shared.User
 
 open System
 

@@ -2,6 +2,7 @@ module App.Admin.Users.Types
 
 open Shared
 open Shared.Authentication
+open Shared.User
 
 type Page =
     | List

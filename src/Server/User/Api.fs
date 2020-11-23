@@ -6,6 +6,7 @@ open Utilities.Auth0
 open Utilities.Database
 open Shared
 open Shared.Authentication
+open Shared.User
 
 let database = databaseContext.Mahjong
 
@@ -49,7 +50,7 @@ let api =
                   return handleAuth request [ Permissions.Users.Read ] (fun content ->
                              query {
                                  for u in database.Users do
-                                     where (u.Id = Guid.Parse(content))
+                                     where (u.Id.ToString() = content)
                                      select (Some { Id = u.Id; Name = u.Name })
                                      exactlyOneOrDefault
                              })

@@ -6,7 +6,8 @@ open Saturn
 
 let combinedRouter =
     choose
-        [ User.Router.router ]
+        [ User.Router.router
+          League.Router.router ]
 
 let app = application {
     url ("http://0.0.0.0:8085")

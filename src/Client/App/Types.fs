@@ -3,7 +3,7 @@ module App.Types
 open Locale
 open Auth0
 open Shared.Authentication
-open Shared
+open Shared.User
 
 [<RequireQualifiedAccess>]
 type Page =
