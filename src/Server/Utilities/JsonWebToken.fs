@@ -47,3 +47,5 @@ let validateToken (SecurityToken token) =
     | :? ArgumentNullException
     | :? ArgumentException
     | :? SecurityTokenException -> InvalidToken
+
+let readClaims (SecurityToken token) = (jwtTokenHandler.ReadJwtToken token).Claims |> List.ofSeq
