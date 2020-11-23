@@ -3,6 +3,7 @@ module App.Admin.Users.State
 open Elmish
 
 open Shared
+open Shared.User
 open App.Admin.Users.Types
 
 module Server =

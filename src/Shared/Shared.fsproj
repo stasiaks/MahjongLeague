@@ -11,6 +11,8 @@
     <Compile Include="Permissions.fs" />
     <Compile Include="Types.fs" />
     <Compile Include="User.fs" />
+    <Compile Include="Season.fs" />
+    <Compile Include="League.fs" />
     <Compile Include="Api.fs" />
   </ItemGroup>
 
