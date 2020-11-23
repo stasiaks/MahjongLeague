@@ -13,6 +13,10 @@ let ExampleToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODk
 let documentation =
     let docs = Docs.createFor<IUserApi>()
     Remoting.documentation "Users API" [
+        docs.route <@ fun api -> api.Register @>
+        |> docs.alias "Register yourself as user"
+        |> docs.description "Nothing will really force user to call this, will be replaces with middleware"
+
         docs.route <@ fun api -> api.GetUsers @>
         |> docs.alias "Get all users"
         |> docs.description "Returns all users in application"
