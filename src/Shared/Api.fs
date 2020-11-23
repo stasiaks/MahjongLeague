@@ -8,5 +8,6 @@ module Route =
         sprintf "/api/%s/%s" typeName methodName
 
 type IUserApi =
-    { GetUsers : SecureRequest<unit> -> Async<SecureResult<User list>>
-      GetUser : SecureRequest<string> -> Async<SecureResult<User>> }
+    { Register : SecureRequest<unit> -> Async<SecureResult<User>>
+      GetUsers : SecureRequest<unit> -> Async<SecureResult<User list>>
+      GetUser : SecureRequest<string> -> Async<SecureResult<User option>> }

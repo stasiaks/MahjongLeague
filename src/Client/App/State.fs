@@ -9,6 +9,15 @@ open App.Urls
 open App.Auth0
 open Shared.Authentication
 open Elmish.Navigation
+open Shared
+
+module Server =
+    open Fable.Remoting.Client
+
+    let api: IUserApi =
+        Remoting.createApi()
+        |> Remoting.withRouteBuilder Route.builder
+        |> Remoting.buildProxy<IUserApi>
 
 [<Literal>]
 let LocaleStorageKey = "app.locale"
@@ -111,10 +120,19 @@ let update (msg: Msg) (state: State): State * Cmd<Msg> =
         let nextState = { state with AccessToken = result.accessToken |> SecurityToken |> Some }
         let getUserInfoCmd = getUserInfoSub result.accessToken |> Cmd.ofSub
         localStorage.setItem (AccessTokenStorageKey, result.accessToken)
-        nextState, getUserInfoCmd
+        let registerUserCmd = Cmd.ofMsg RegisterUser
+        nextState, Cmd.batch [getUserInfoCmd; registerUserCmd]
     | UserInfoLoaded userInfo ->
         let nextState = { state with UserInfo = Some userInfo }
         nextState, Cmd.none
+    | RegisterUser ->
+        let request = createSecureRequest()
+        let registerUserCmd = Cmd.OfAsync.perform Server.api.Register request (Register >> OnApiResponse)
+        state, registerUserCmd
+    | OnApiResponse msg ->
+        match msg with
+        | Register user ->
+            state, Cmd.none
     | Logout ->
         let logoutOptions =
             { clientId = clientId

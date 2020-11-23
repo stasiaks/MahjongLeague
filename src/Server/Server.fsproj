@@ -9,6 +9,7 @@
     <!-- Utilities -->
     <Compile Include="Utilities/JsonWebToken.fs" />
     <Compile Include="Utilities/Auth.fs" />
+    <Compile Include="Utilities/Auth0.fs" />
     <Compile Include="Utilities/Database.fs" />
     <!-- User -->
     <Compile Include="User/Api.fs" />
