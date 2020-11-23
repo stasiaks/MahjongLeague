@@ -2,3 +2,4 @@ Saturn
 Fable.Remoting.Giraffe
 SQLProvider
 Npgsql
+FSharp.Data

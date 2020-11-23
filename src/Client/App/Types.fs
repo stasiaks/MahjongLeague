@@ -3,12 +3,16 @@ module App.Types
 open Locale
 open Auth0
 open Shared.Authentication
+open Shared
 
 [<RequireQualifiedAccess>]
 type Page =
     | Home
     | Admin of Admin.Types.Page
     | NotFound
+
+type ApiResponseMsg =
+    | Register of SecureResult<User>
 
 type Msg =
     | AdminMsg of Admin.Types.InternalMsg
@@ -18,6 +22,8 @@ type Msg =
     | Authenticated of IAuthResult
     | UserInfoLoaded of IAuth0UserInfo
     | Logout
+    | RegisterUser
+    | OnApiResponse of ApiResponseMsg
 
 let adminTranslator =
     Admin.Types.translator
