@@ -5,14 +5,10 @@ open Fable.Remoting.Server
 open Fable.Remoting.Giraffe
 
 open Shared
-open Shared.Authentication
-
-[<Literal>]
-let ExampleToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
 
 let documentation =
     let docs = Docs.createFor<ILeagueApi>()
-    Remoting.documentation "Users API" [
+    Remoting.documentation "Leagues API" [
         docs.route <@ fun api -> api.CreateLeague @>
         |> docs.alias "Create league"
         |> docs.description "Create new league that will contain seasons"
