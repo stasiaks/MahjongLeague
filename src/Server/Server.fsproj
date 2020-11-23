@@ -8,6 +8,8 @@
     <None Include="paket.references" />
     <!-- Utilities -->
     <Compile Include="Utilities/JsonWebToken.fs" />
+    <Compile Include="Utilities/Auth.fs" />
+    <Compile Include="Utilities/Database.fs" />
     <!-- User -->
     <Compile Include="User/Api.fs" />
     <Compile Include="User/Documentation.fs" />
