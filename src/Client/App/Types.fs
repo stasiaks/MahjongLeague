@@ -9,6 +9,7 @@ open Shared.User
 type Page =
     | Home
     | Admin of Admin.Types.Page
+    | Leagues of Leagues.Types.Page
     | NotFound
 
 type ApiResponseMsg =
@@ -16,6 +17,7 @@ type ApiResponseMsg =
 
 type Msg =
     | AdminMsg of Admin.Types.InternalMsg
+    | LeaguesMsg of Leagues.Types.InternalMsg
     | NavigateTo of Page
     | ChangeLocale of Locale
     | Login
@@ -30,9 +32,15 @@ let adminTranslator =
         { OnInternalMsg = AdminMsg
           OnNavigateTo = Page.Admin >> NavigateTo }
 
+let leaguesTranslator =
+    Leagues.Types.translator
+        { OnInternalMsg = LeaguesMsg
+          OnNavigateTo = Page.Leagues >> NavigateTo }
+
 type State =
     { // Children state
       Admin: Admin.Types.State
+      Leagues: Leagues.Types.State
       // App's state
       CurrentPage: Page
       Locale: Locale
