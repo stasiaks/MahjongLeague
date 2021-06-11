@@ -59,14 +59,17 @@ let getUserInfoSub token dispatch =
 let onNavigateMsgs page =
     match page with
     | Page.Admin p -> [Admin.Types.InternalMsg.OnNavigate p |> AdminMsg]
+    | Page.Leagues p -> [Leagues.Types.InternalMsg.OnNavigate p |> LeaguesMsg]
     | _ -> []
 
 // defines the initial state and initial command (= side-effect) of the application
 let init (page: Page option): State * Cmd<Msg> =
     let admin, adminCmd = Admin.State.init()
+    let leagues, leaguesCmd = Leagues.State.init()
 
     let state =
         { Admin = admin
+          Leagues = leagues
           // Application state
           CurrentPage = Option.defaultValue Page.NotFound page
           Locale = Option.defaultValue English localeFromStorage
@@ -83,6 +86,7 @@ let init (page: Page option): State * Cmd<Msg> =
 
     state, Cmd.batch
         [ Cmd.map AdminMsg adminCmd
+          Cmd.map LeaguesMsg leaguesCmd
           getUserInfoCmd
           onNavigateCmd ]
 
@@ -103,6 +107,11 @@ let update (msg: Msg) (state: State): State * Cmd<Msg> =
         let nextAdminState, adminCmd = Admin.State.update msg state.Admin createSecureRequest
         let nextState = { state with Admin = nextAdminState }
         let nextCmd = Cmd.map AdminMsg adminCmd
+        nextState, nextCmd
+    | LeaguesMsg msg ->
+        let nextLeaguesState, leaguesCmd = Leagues.State.update msg state.Leagues
+        let nextState = { state with Leagues = nextLeaguesState }
+        let nextCmd = Cmd.map LeaguesMsg leaguesCmd
         nextState, nextCmd
     | NavigateTo destination ->
         let nextState = { state with CurrentPage = destination }

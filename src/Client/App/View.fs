@@ -67,6 +67,7 @@ let navBrand state dispatch lstr permissionContainer =
                 Navbar.menu []
                     [ Navbar.Start.div []
                           [ Navbar.Item.a [ dispatchProps (NavigateTo Page.Home) ] [ lstr Home ]
+                            Navbar.Item.a [ dispatchProps (NavigateTo <| Page.Leagues Leagues.Types.Page.List) ] [ lstr Leagues ]
                             permissionContainer
                                 [ Permissions.Users.Read ]
                                 <| Navbar.Item.a [ dispatchProps (NavigateTo <| Page.Admin Admin.Types.Page.Dashboard) ] [ lstr Admin ] ]
@@ -99,6 +100,7 @@ let main (state: State) dispatch lstr permissionContainer =
     match state.CurrentPage with
     | Page.Home -> Home.View.render (HomeToken >> lstr)
     | Page.Admin page -> Admin.View.render state.Admin (adminTranslator >> dispatch) (AdminToken >> lstr) page
+    | Page.Leagues page -> Leagues.View.render state.Leagues (leaguesTranslator >> dispatch) (LeaguesToken >> lstr) page
     | Page.NotFound -> NotFound.View.render (NotFoundToken >> lstr)
 
 let render (state: State) (dispatch: Msg -> unit) =

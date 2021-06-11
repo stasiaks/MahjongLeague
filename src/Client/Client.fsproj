@@ -14,6 +14,11 @@
     <!-- App/Home -->
     <Compile Include="App/Home/Localization.fs" />
     <Compile Include="App/Home/View.fs" />
+    <!-- App/Leagues -->
+    <Compile Include="App/Leagues/Localization.fs" />
+    <Compile Include="App/Leagues/Types.fs" />
+    <Compile Include="App/Leagues/View.fs" />
+    <Compile Include="App/Leagues/State.fs" />
     <!-- App/Admin/Dashboard -->
     <Compile Include="App/Admin/Dashboard/Localization.fs" />
     <Compile Include="App/Admin/Dashboard/View.fs" />
