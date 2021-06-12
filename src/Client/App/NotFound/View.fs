@@ -1,7 +1,7 @@
 module App.NotFound.View
+module LT = Localization
 
 open Fable.React
 open Fulma
-open App.NotFound.Localization
 
-let render lstr = Container.container [] [ h1 [] [ lstr Oops ] ]
+let render lstr = Container.container [] [ h1 [] [ lstr LT.Oops ] ]

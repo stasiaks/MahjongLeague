@@ -1,15 +1,15 @@
 module App.Admin.Dashboard.View
+module LT = Localization
 
 open Fable.FontAwesome
 open Fable.React
 open Fable.React.Props
 open Fulma
-open App.Admin.Dashboard.Localization
 
 let breadcrumb lstr =
     Breadcrumb.breadcrumb []
-        [ Breadcrumb.item [] [ a [] [ lstr General ] ]
-          Breadcrumb.item [ Breadcrumb.Item.IsActive true ] [ a [] [ lstr Dashboard ] ] ]
+        [ Breadcrumb.item [] [ a [] [ lstr LT.General ] ]
+          Breadcrumb.item [ Breadcrumb.Item.IsActive true ] [ a [] [ lstr LT.Dashboard ] ] ]
 
 let info =
     section [ Class "info-tiles" ]

@@ -1,10 +1,10 @@
 module App.Admin.View
+module LT = Localization
 
 open Fable.React
 open Fulma
 
 open App.Admin.Types
-open App.Admin.Localization
 
 let menu dispatch =
     let menuDispatchProp msg = Menu.Item.OnClick(fun _ -> dispatch msg)
@@ -16,8 +16,8 @@ let menu dispatch =
 
 let main state dispatch lstr page =
     match page with
-    | Dashboard -> Dashboard.View.render (DashboardToken >> lstr)
-    | Users page -> Users.View.render state.Users dispatch (UsersToken >> lstr) page
+    | Dashboard -> Dashboard.View.render (LT.DashboardToken >> lstr)
+    | Users page -> Users.View.render state.Users dispatch (LT.UsersToken >> lstr) page
 
 let render (state: State) (dispatch: Msg -> unit) lstr page =
     Container.container []

@@ -1,16 +1,16 @@
 module App.Admin.Users.View
+module LT = Localization
 
 open Fable.React
 open Fable.React.Props
 open Fulma
-open Localization
 open Types
 open Fable.FontAwesome
 
 let breadcrumb lstr =
     Breadcrumb.breadcrumb []
-        [ Breadcrumb.item [] [ a [] [ lstr General ] ]
-          Breadcrumb.item [ Breadcrumb.Item.IsActive true ] [ a [] [ lstr Users ] ] ]
+        [ Breadcrumb.item [] [ a [] [ lstr LT.General ] ]
+          Breadcrumb.item [ Breadcrumb.Item.IsActive true ] [ a [] [ lstr LT.Users ] ] ]
 
 let list state lstr =
     Table.table [ Table.IsFullWidth; Table.IsStriped; Table.IsHoverable ]

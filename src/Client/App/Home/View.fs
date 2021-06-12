@@ -1,7 +1,7 @@
 module App.Home.View
+module LT = Localization
 
 open Fable.React
 open Fulma
-open App.Home.Localization
 
-let render lstr = Container.container [] [ h1 [] [ lstr HelloWorld ] ]
+let render lstr = Container.container [] [ h1 [] [ lstr LT.HelloWorld ] ]

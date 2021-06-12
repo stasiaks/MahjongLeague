@@ -1,16 +1,16 @@
 module App.Leagues.View
+module LT = Localization
 
 open Fable.FontAwesome
 open Fable.React
 open Fable.React.Props
 open Fulma
-open Localization
 open Types
 
 let breadcrumb lstr =
     Breadcrumb.breadcrumb []
-        [ Breadcrumb.item [] [ a [] [ lstr Leagues ] ]
-          Breadcrumb.item [ Breadcrumb.Item.IsActive true ] [ a [] [ lstr LocalizationToken.List ] ] ]
+        [ Breadcrumb.item [] [ a [] [ lstr LT.Leagues ] ]
+          Breadcrumb.item [ Breadcrumb.Item.IsActive true ] [ a [] [ lstr LT.List ] ] ]
 
 let list state lstr =
     Table.table [ Table.IsFullWidth; Table.IsStriped; Table.IsHoverable ]
