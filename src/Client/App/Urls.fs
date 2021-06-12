@@ -8,6 +8,7 @@ open App.Types
 
 let homeSegment = "home"
 let adminSegment = "admin"
+let leaguesSegment = "leagues"
 let notFoundSegment = "404"
 
 let toUrl page =
@@ -17,6 +18,10 @@ let toUrl page =
         sprintf "%s/%s"
         <| adminSegment
         <| Admin.Urls.toUrl t
+    | Page.Leagues t ->
+        sprintf "%s/%s"
+        <| leaguesSegment
+        <| Leagues.Urls.toUrl t
     | Page.NotFound -> notFoundSegment
     |> (+) "/"
 
@@ -26,6 +31,7 @@ let parser: Parser<Page option> =
         map Page.Home (s homeSegment)
         map Page.NotFound (s notFoundSegment)
         yield! Admin.Urls.parsers Page.Admin (s adminSegment)
+        yield! Leagues.Urls.parsers Page.Leagues (s leaguesSegment)
     }
     |> (List.ofSeq >> oneOf)
     |> parsePath

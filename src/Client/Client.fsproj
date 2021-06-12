@@ -17,6 +17,7 @@
     <!-- App/Leagues -->
     <Compile Include="App/Leagues/Localization.fs" />
     <Compile Include="App/Leagues/Types.fs" />
+    <Compile Include="App/Leagues/Urls.fs" />
     <Compile Include="App/Leagues/View.fs" />
     <Compile Include="App/Leagues/State.fs" />
     <!-- App/Admin/Dashboard -->
