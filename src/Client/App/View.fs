@@ -1,4 +1,5 @@
 module App.View
+module LT = Localization
 
 open Fable.FontAwesome
 open Fable.React
@@ -7,7 +8,6 @@ open Fulma
 
 open Locale
 open App.Types
-open App.Localization
 open App.JwtDecode
 open Shared
 open Shared.Authentication
@@ -30,11 +30,11 @@ let safeComponents lstr =
               a [ Href "https://zaid-ajaj.github.io/Fable.Remoting/" ] [ str "Fable.Remoting" ] ]
 
     span []
-        [ lstr Version
+        [ lstr LT.Version
           str " "
           strong [] [ str Version.app ]
           str " "
-          lstr PoweredBy
+          lstr LT.PoweredBy
           str ": "
           components ]
 
@@ -43,8 +43,8 @@ let signIn state dispatch lstr =
         Navbar.Item.Props [ OnClick(fun _ -> dispatch msg) ]
 
     match state.AccessToken, state.UserInfo with
-    | None, _ -> Navbar.Item.a [ dispatchProps Login ] [ lstr SignIn ]
-    | Some _, None -> Navbar.Item.a [ dispatchProps Logout ] [ lstr SignOut ]
+    | None, _ -> Navbar.Item.a [ dispatchProps Login ] [ lstr LT.SignIn ]
+    | Some _, None -> Navbar.Item.a [ dispatchProps Logout ] [ lstr LT.SignOut ]
     | Some _, Some userInfo ->
         Navbar.Item.div
             [ Navbar.Item.HasDropdown
@@ -55,7 +55,7 @@ let signIn state dispatch lstr =
                       Style [ PaddingRight "0.5em" ] ]
                   str userInfo.name ]
               Navbar.Dropdown.div []
-                [ Navbar.Item.a [ dispatchProps Logout ] [ lstr SignOut ] ] ]
+                [ Navbar.Item.a [ dispatchProps Logout ] [ lstr LT.SignOut ] ] ]
 
 let navBrand state dispatch lstr permissionContainer =
     let dispatchProps msg =
@@ -66,11 +66,11 @@ let navBrand state dispatch lstr permissionContainer =
               [ Navbar.Brand.div [] [ Navbar.Item.a [ Navbar.Item.CustomClass "brand-text" ] [ str "Mahjong League" ] ]
                 Navbar.menu []
                     [ Navbar.Start.div []
-                          [ Navbar.Item.a [ dispatchProps (NavigateTo Page.Home) ] [ lstr Home ]
-                            Navbar.Item.a [ dispatchProps (NavigateTo <| Page.Leagues Leagues.Types.Page.List) ] [ lstr Leagues ]
+                          [ Navbar.Item.a [ dispatchProps (NavigateTo Page.Home) ] [ lstr LT.Home ]
+                            Navbar.Item.a [ dispatchProps (NavigateTo <| Page.Leagues Leagues.Types.Page.List) ] [ lstr LT.Leagues ]
                             permissionContainer
                                 [ Permissions.Users.Read ]
-                                <| Navbar.Item.a [ dispatchProps (NavigateTo <| Page.Admin Admin.Types.Page.Dashboard) ] [ lstr Admin ] ]
+                                <| Navbar.Item.a [ dispatchProps (NavigateTo <| Page.Admin Admin.Types.Page.Dashboard) ] [ lstr LT.Admin ] ]
                       Navbar.End.div []
                           [ Navbar.Item.div
                               [ Navbar.Item.HasDropdown
@@ -79,7 +79,7 @@ let navBrand state dispatch lstr permissionContainer =
                                       [ Fa.i
                                           [ Fa.Solid.Globe
                                             Fa.IconOption.PullLeft ] []
-                                        lstr Language ]
+                                        lstr LT.Language ]
                                   Navbar.Dropdown.div []
                                       [ Navbar.Item.a [ dispatchProps (ChangeLocale English) ] [ str "English" ]
                                         Navbar.Item.a [ dispatchProps (ChangeLocale Polish) ] [ str "Polski" ] ] ]
@@ -98,13 +98,13 @@ let permissionContainer (token: SecurityToken option) (requiredPermissions: Perm
 
 let main (state: State) dispatch lstr permissionContainer =
     match state.CurrentPage with
-    | Page.Home -> Home.View.render (HomeToken >> lstr)
-    | Page.Admin page -> Admin.View.render state.Admin (adminTranslator >> dispatch) (AdminToken >> lstr) page
-    | Page.Leagues page -> Leagues.View.render state.Leagues (leaguesTranslator >> dispatch) (LeaguesToken >> lstr) page
-    | Page.NotFound -> NotFound.View.render (NotFoundToken >> lstr)
+    | Page.Home -> Home.View.render (LT.HomeToken >> lstr)
+    | Page.Admin page -> Admin.View.render state.Admin (adminTranslator >> dispatch) (LT.AdminToken >> lstr) page
+    | Page.Leagues page -> Leagues.View.render state.Leagues (leaguesTranslator >> dispatch) (LT.LeaguesToken >> lstr) page
+    | Page.NotFound -> NotFound.View.render (LT.NotFoundToken >> lstr)
 
 let render (state: State) (dispatch: Msg -> unit) =
-    let lstr token = localize state.Locale token |> str
+    let lstr token = LT.localize state.Locale token |> str
     let permissionContainer = state.AccessToken |> permissionContainer
     div []
         [ navBrand state dispatch lstr permissionContainer
